@@ -1,0 +1,86 @@
+<h1>Usuarios del sistema</h1>
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Enumeración de usuarios</h2>
+<p class="mainComment">Enumeración de usuarios en el sistema.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">net users</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-LocalUser | ft Name,Enabled,LastLogon
+Get-WmiObject -Class Win32_UserAccount</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Información sobre un usuario</h2>
+<p class="mainComment">Muestra información detallada sobre un usuario.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">net users [user]</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell"></code>Get-WmiObject Win32_UserAccount | Where-Object { $_.Name -eq "[user]" }</code></pre>
+</div>
+<!-- Code-->
+
+
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Enumeración de grupos</h2>
+<p class="mainComment">Enumeración de grupos locales en el sistema.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">net localgroup</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell"></code>Get-LocalGroup</code></pre>
+</div>
+<!-- Code-->
+
+
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Miembros de un grupo</h2>
+<p class="mainComment">Enumeración de los usuarios que pertenecen a un grupo en concreto.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">net localgroup [group]</code></pre>
+</div>
+<!-- Code-->
+
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell"></code>Get-LocalGroupMember [group]</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Sesiones activas</h2>
+<p class="mainComment">Enumeración de las sesiones activas de usuarios en el equipo.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Usuarios logeados
+quser
+#Sesiones remotas
+qwinsta
+#Tickets de kerberos
+klist sessions
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Política de contraseñas</h2>
+<p class="mainComment">Políticas establecidas en el equipo sobre contraseñas.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">net accounts</code></pre>
+</div>
+<!-- Code-->

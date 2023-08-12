@@ -1,0 +1,57 @@
+<h1>Programas instalados en el sistema</h1>
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Programas instalados</h2>
+<p class="mainComment">Enumeración de los programas instalados en el sistema.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">dir /a "C:\Program Files", "C:\Program Files (x86)"
+reg query HKEY_LOCAL_MACHINE\SOFTWARE</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-ChildItem 'C:\Program Files', 'C:\Program Files (x86)' | ft Parent,Name,LastWriteTime
+Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
+Get-CimInstance -class win32_Product | Select-Object Name, Version
+</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Procesos</h2>
+<p class="mainComment">Enumeración de procesos y aplicaciones corriendo en el sistema.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">tasklist /svc</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-Process | where {$_.ProcessName -notlike "svchost*"} | ft ProcessName, Id
+#Con nombre de usuario
+Get-WmiObject -Query "Select * from Win32_Process" | where {$_.Name -notlike "svchost*"} | Select Name, Handle, @{Label="Owner";Expression={$_.GetOwner().User}} | ft -AutoSize
+</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>WSL</h2>
+<p class="mainComment">Comprueba si está instalado el subsistema de Windows para Linux.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Generalmente este estará por defecto
+dir C:\Windows\System32\wsl.exe
+#Este sólo se encuentra cuando se ha instalado WSL
+dir C:\Windows\System32\bash.exe
+#Para comprobar la lista de distribuciones instaladas
+wslconfig /list
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">Si está instalado se pueden ver las distribuciones instaladas.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">wslconfig /list</code></pre>
+</div>
+<!-- Code-->

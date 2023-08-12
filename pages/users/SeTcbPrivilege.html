@@ -1,0 +1,16 @@
+<h1>Tcb Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva determina si un proceso puede asumir la identidad de cualquier usuario y obtener así acceso a los recursos a los que está autorizado. Este permiso 
+normalmente lo requieren solo los servicios de autenticación de bajo nivel. Además, el proceso de llamada también puede solicitar que se agreguen privilegios 
+adicionales arbitrarios al token de acceso actual.
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/act-as-part-of-the-operating-system">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Un atacante podría usar <b>KERB_S4U_LOGON</b> para conseguir un token impersonado para un usuario sin saber las credenciales, añadirse a si mismo al grupo administradores, 
+cambiar el nivel de integridad del token, etc. resultando en una forma rápida para la escalada de privilegios.
+</p>

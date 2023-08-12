@@ -1,0 +1,15 @@
+<h1>Dns Admins</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Los miembros del grupo “DnsAdmins” tienen acceso a la información de DNS de la red. Los permisos asociados a este grupo de forma predeterminada 
+    son poder leer, escribir, crear y eliminar objetos secundarios. Generalmente este grupo solo existe si el rol de servidor DNS está o estuvo 
+    instalado en un controlador de dominio.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Existe un problema relacionado con la escalada de privilegios con usuarios pertenecientes a este grupo, y es que se les permite cambiar la 
+    configuración en el registro del servicio DNS de forma que se puede cargar un Plugin con extensión DLL que se cargará al iniciarse el servicio. 
+    Un atacante podría hacer referencia en esa configuración a un fichero DLL malicioso y de esa forma conseguir ejecución en la máquina como SYSTEM.
+</p>

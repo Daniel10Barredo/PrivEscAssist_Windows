@@ -1,0 +1,42 @@
+<h1>Backup Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva especifica que usuarios pueden omitir los permisos de archivos, directorios, registros y otros objetos persistentes con el fin 
+de realizar una copia de seguridad del sistema. Este permiso solo será efectivo a través de la interfaz de aplicaciones de copia de seguridad NTFS.
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/back-up-files-and-directories">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<p class="mainText">
+Es fácil ver que se trata de un permiso peligroso ya que podría permitir a un atacante acceder a cualquier tipo de fichero sensible dentro del sistema 
+como los ficheros <b>SAM y SYSTEM</b> que contienen todos los hashes almacenados de los usuario. Estos luego podrán ser utilizados para realizar un ataque de 
+cracking local o incluso llevar a cabo ataques de “Pass the Hash”.
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Para la explotación el primer paso es la activación de este permiso, para esto se puede utilizar el script <b>EnableSeBackupPrivilege.ps1</b> <a class="linksref" target="_blank" href="https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeBackupPrivilege.ps1">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>.
+ Y a continuación ya podremos realizar la copia por ejemplo de SAM y SYSTEM de la siguiente forma.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">mkdir c:\Temp
+reg save hklm\sam c:\Temp\sam
+reg save hklm\system c:\Temp\system
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainText">
+Finalmente podremos extraer los hashes NTLM con mimikatz y reutilizarlos haciendo ataques "Pass The Hash" o intantar crackearlos con John o Hashcat.
+<a class="linksref" target="_blank" href="https://www.hackingarticles.in/windows-privilege-escalation-sebackupprivilege/">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">lsadump::sam /system:[system_file] /sam:[sam_file]</code></pre>
+</div>
+<!-- Code-->

@@ -1,0 +1,115 @@
+<h1>Arranque</h1>
+
+<p class="mainComment">
+    El sexto punto de la metodología consiste en la búsqueda de posibles vulnerabilidades en las aplicaciones que son ejecutadas 
+    automáticamente cuando se cumple una condición determinada en el sistema. Estas tareas permiten realizar tareas de gestión 
+    sin intervención del usuario, pero también pueden presentar riesgos cuando no están correctamente configuradas.
+</p>
+
+<p>
+    Las aplicaciones de arranque son ejecutadas cuando un usuario inicia sesión o al arranque del sistema, y se encuentran establecidas 
+    en diferentes localizaciones conocidas del registro o también en algunos directorios comunes. Son un recurso muy conocido por 
+    los atacantes para labores de persistencia, aunque también podrían utilizarse para una potencial escalada de privilegios si no 
+    están perfectamente configuradas.
+</p>
+
+<h2 id="fauxiliar"><i class="bi bi-check-circle me-2"></i></i>Función Auxiliar</h2>
+<p class="mainComment">
+    Esta función está basada en PowerSploit y se encarga de comprobar si el usuario tiene permisos suficientes para modificar un dirtectorio o registro.<br>
+    <span class="text-success">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Algunos scripts de este apartado necesitan la siguiente función, simplemente copia y pega su 
+        contenido.
+    </span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i>Permisos de Directorios</h2>
+<p class="mainComment">
+    Este paso consiste en listar todas las ubicaciones de los binarios de cada aplicación al arranque y comprobar si el usuario puede llegar a 
+    modificar el binario o sus directorios.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-CimInstance Win32_StartupCommand | ForEach-Object { if(ModifiablePath $_.Command){ $_ } }
+#Sólo para listar las tareas
+Get-CimInstance Win32_StartupCommand | select Name, command, Location, User | fl
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD e icalcs de la siguiente forma.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista las aplicaciones al inicio
+wmic startup get caption,command
+#Comprobación de cada 
+icacls "C:\path to command"
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Directorios Startup</h2>
+<p class="mainComment">
+    También existe una lista de directorios especiales para que se puedan llegar a ejecutar las apicaciones al inicio de sesión si se colocan ahí 
+    los binarios y estos serían los siguientes.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista de directorios Startup
+dir /b "C:\Documents and Settings\All Users\Start Menu\Programs\Startup" 2>nul
+dir /b "C:\Documents and Settings\%username%\Start Menu\Programs\Startup" 2>nul
+dir /b "%programdata%\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
+dir /b "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Registros de Autoarranque</h2>
+<p class="mainComment">
+    Son numerosos los registros que pueden contener aplicaciones para la ejecución al inicio de sesión o al iniciar el sistema y estos serían los 
+    siguientes.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista de directorios Startup
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnce
+reg query HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+reg query HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnce
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce
+reg query HKCU\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnce
+reg query HKLM\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKLM\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunOnce
+reg query HKLM\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunE
+reg query HKLM\Software\Microsoft\Windows\RunOnceEx
+reg query HKLM\Software\Wow6432Node\Microsoft\Windows\RunOnceEx
+reg query HKCU\Software\Microsoft\Windows\RunOnceEx
+reg query HKCU\Software\Wow6432Node\Microsoft\Windows\RunOnceEx
+
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\RunServices
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunServices
+reg query HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunServicesOnce
+reg query HKCU\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunServicesOnce
+reg query HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunServices
+reg query HKCU\Software\Wow5432Node\Microsoft\Windows\CurrentVersion\RunServices
+
+#Ejecutados al iniciar sesión Winlogon
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Userinit"
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell"
+</code></pre>
+</div>
+<!-- Code-->

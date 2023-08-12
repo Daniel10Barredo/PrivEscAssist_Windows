@@ -1,0 +1,98 @@
+<h1>DLL Hijacking</h1>
+
+<p class="mainComment">
+    Los servicios del sistema, generalmente son ejecutados en un nivel de integridad alto con SYSTEM y además, son instalados con programas 
+    de terceros que no siempre tienen en consideración las medidas de seguridad apropiadas, lo que puede dejar expuestos puntos débiles que 
+    los atacantes pueden aprovechar.
+</p>
+<p>
+    Este ataque que se aprovecha del orden de directorios en los que se buscan las librerías DLL en el sistema cuando están referenciadas de 
+    forma relativa en el servicio.
+</p>
+
+<h2 id="fauxiliar"><i class="bi bi-check-circle me-2"></i></i>Función Auxiliar</h2>
+<p class="mainComment">
+    Esta función está basada en PowerSploit y se encarga de comprobar si el usuario tiene permisos suficientes para modificar un dirtectorio o registro.<br>
+    <span class="text-success">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Algunos scripts de este apartado necesitan la siguiente función, simplemente copia y pega su 
+        contenido.
+    </span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Variable PATH</h2>
+<p>
+Este apartado consistirá entonces en comprobar que el usuario no tiene permisos de escritura en ninguno de los directorios predefinidos o referenciados 
+en la variable de entorno PATH.
+</p>
+<p class="mainComment">
+    Esta función pasa por todos los directorios establecidos en PATH y comprueba si el usuario puede modificar alguno de ellos.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-Item Env:Path | Select-Object -ExpandProperty Value | ForEach-Object { $_.split(';') } | Where-Object {$_ -and ($_ -ne '')} | ForEach-Object { if(ModifiablePath $_){ $_ } }
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD e icalcs de la siguiente forma.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">for %I in ("%PATH:;=" "%") do (icacls %I)
+</code></pre>
+</div>
+<!-- Code-->
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Si se puede modificar alguno de estos directorios, es interesante revisar en detalle si se puede realizar la escalada de privilegios
+    mediante ataques DLLHijacking.
+</p>
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Directorios Especiales</h2>
+<p>
+    Resulta interesante comprobar si existen configuraciones de permisos irregulares dentro de lugares peligrosos.
+</p>
+<p class="mainComment">
+    Función auomática para comprobar permisos irregulares dentro de Archivos de Programa y el directorio Windows.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-ChildItem 'C:\Program Files\*','C:\Program Files (x86)\*','C:\Windows\*' | ForEach-Object {try{if(ModifiablePath $_){ $_ }}catch{}}
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD utilizando icalcs para comprobar los permisos.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Archivos de programa y Windows
+icacls "C:\Program Files\*" 2>nul | findstr "(M)" | findstr "Everyone"
+icacls "C:\Program Files\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users" 
+icacls "C:\Program Files (x86)\*" 2>nul | findstr "(M)" | findstr "Everyone"
+icacls "C:\Program Files (x86)\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users" 
+icacls "C:\Windows\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users" 
+icacls "C:\Windows\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users" 
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Si se puede modificar alguno de estos directorios, es interesante revisar en detalle si se puede realizar la escalada de privilegios
+    mediante ataques DLLHijacking.
+</p>

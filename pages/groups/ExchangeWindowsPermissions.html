@@ -1,0 +1,16 @@
+<h1>Exchange Windows Permissions</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Durante la instalación de Microsoft Exchange, se crean varios grupos de seguridad en el directorio activo relacionados con este. El grupo 
+    de “Permisos de Windows Exchange” tiene permisos de escritura DACL en el dominio.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Un atacante podría abusar de esto y modificar la ACL para obtener privilegios de nivel de replicación DSync y poder así realizar una 
+    sincronización que permita obtener todos los hashes del directorio activo, para finalmente llevar a cabo una escalada de privilegios en 
+    todo el dominio. <a class="linksref" target="_blank" href="https://pentestlab.blog/2019/09/12/microsoft-exchange-acl/">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+</p>

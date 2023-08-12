@@ -1,0 +1,31 @@
+<h1>Grupos del usuario</h1>
+
+<p>
+    EL segundo paso cosiste en comprobar los grupos a los que pertenece el usuario. Esta comprobación es de suma importancia, 
+    ya que algunos de estos grupos podrían representar posibles vías directas para llevar a cabo la escalada de privilegios.
+</p>
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Comprobación</h2>
+<p class="mainComment">Utiliza el siguiente comando para comprobar los grupos a los que pertenece el usuario.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">whoami /groups</code></pre>
+</div>
+<!-- Code-->
+
+<p>
+    Los grupos con privilegios que puede aprovechar un atacante para una escalada de privilegios son los siguientes:
+</p>
+
+<div class="list-group">
+    <a role="button" href="#groups/Admins" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Administrators, Domain Admins, Enterprise Admins</a>
+    <a role="button" href="#groups/BackupOperators" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Backup Operators</a>
+    <a role="button" href="#groups/DnsAdmins" class="internal_link list-group-item list-group-item-secondary list-group-item-action">DnsAdmins</a>
+    <a role="button" href="#groups/ExchangeWindowsPermissions" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Exchange Windows Permissions</a>
+    <a role="button" href="#groups/HyperVAdministrators" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Hyper-V Administrators</a>
+    <a role="button" href="#groups/OrganizationManagement" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Organization Management</a>
+    <a role="button" href="#groups/PrintOperators" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Print Operators</a>
+    <a role="button" href="#groups/AccountOperators" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Account Operators</a>
+    <a role="button" href="#groups/ServerOperators" class="internal_link list-group-item list-group-item-secondary list-group-item-action">Server Operators</a>
+</div>
+<br>

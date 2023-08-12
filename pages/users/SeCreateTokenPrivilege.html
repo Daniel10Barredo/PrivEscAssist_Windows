@@ -1,0 +1,16 @@
+<h1>Create Token Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva determina que usuario tiene permisos para poder crear un token y que cuentas puede usar para obtener acceso a los recursos 
+locales usando NtCreateToken() de la API de Windows.
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/create-a-token-object">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Esta directiva puede ser utilizada por un atacante para realizar una elevación de privilegios, ya que es posible impersonar un token siempre 
+que sea con el mismo usuario y el nivel de integridad sea igual o menor al que se está ejecutando. En este caso, el usuario puede crear e 
+impersonar un token añadiendo a este usuario a un grupo privilegiado que le permita la escalada por otras vías.
+</p>

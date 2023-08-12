@@ -1,0 +1,18 @@
+<h1>Server Operators</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Los miembros del grupo de “Operadores de servidor” pueden administrar controladores de dominio, pudiendo realizar las siguientes acciones: 
+    iniciar sesión en un servidor de forma interactiva, crear y eliminar recursos compartidos de red, iniciar y detener servicios, realizar 
+    copias de seguridad y restaurar archivos, dar formato a la unidad de disco duro del equipo y apagarlo.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Existen varias posibilidades para la escalada de privilegios con este grupo, por ejemplo tienen los permisos peligrosos de 
+    <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> 
+    y <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b> explicados en el punto anterior. 
+    Pero la forma más eficiente de escalar privilegios es aprovechar que tiene permisos 
+    de modificación de los servicios, de forma que solamente habría que sustituir el binario al que apunta binPath en un servicio que se ejecute 
+    como SYSTEM hacia un código malicioso y elevar así los privilegios en la máquina.
+</p>

@@ -1,0 +1,32 @@
+<h1>Assign Primary Token Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+En esta directiva suele estar asignada a cuentas de servicio y permite reemplazar el token de acceso asociado a un proceso secundario, 
+más concretamente que cuentas de usuario puede llamar a CreateProcessAsUser() de la API de Windows para que un servicio pueda iniciar a otro.
+</p><p class="mainText">
+La información de un token incluye la identidad y los privilegios de la cuenta asociada al proceso y con este privilegio, 
+todos los procesos secundarios podrían tener su token de acceso remplazado por el token de nivel de proceso. 
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/replace-a-process-level-token">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Para la explotación de este tipo de privilegios, son muy conocidos en la comunidad los ataques tipo Juicy Potato 
+y sus variantes. Estos ataques se basan en la combinación de una suplantación de identidad NBNS y al mismo tiempo una retransmisión 
+NTLM de forma interna para crear un servicio con las credenciales que ejecute un comando definido por el usuario.
+</p>
+<p class="mainText">
+Ha habido algunos cambios por parte de Microsoft tratando de bloquear este tipo de ataques, aunque por compatibilidad todavía hay variantes 
+que funcionan a día de hoy. La versión <b>Juicy Potato</b>
+<a class="linksref" target="_blank" href="https://github.com/ohpe/juicy-potato">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+ es funcional hasta Windows 10 build 1809 y Windows Server 2019 y para versiones superiores 
+habría que utilizar otra variante como <b>Rouge Potato</b> 
+<a class="linksref" target="_blank" href="https://github.com/antonioCoco/RoguePotato">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>. 
+</p>

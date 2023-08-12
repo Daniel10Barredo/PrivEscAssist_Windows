@@ -1,0 +1,19 @@
+<h1>Manage Volume Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva determina qué usuarios pueden realizar tareas de administración de volúmenes o discos, como desfragmentar, crear o quietar volúmenes y ejecutar 
+herramientas de limpieza de discos. Hay que tener especial cuidado con este permiso ya que se puede explorar los discos y ampliar los archivos en la memoria.
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/perform-volume-maintenance-tasks">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Hay varias aproximaciones que se pueden utilizar para conseguir elevar privilegios a partir de esta directiva, un ejemplo sería hacerse con el control del 
+directorio raíz “C:\” y por ejemplo crear una librería maliciosa situándola en System32 y de esa forma realizar un DLL Hijacking sencillo a un servicio que 
+se esté ejecutando con un nivel de integridad alto. 
+<a class="linksref" target="_blank" href="https://github.com/xct/SeManageVolumeAbuse">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>

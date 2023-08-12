@@ -1,0 +1,23 @@
+<h1>Take Ownership Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva determina qué usuarios pueden tomar posesión de cualquier objeto en el dispositivo, incluidas carpetas, procesos, 
+claves de registro, etc. Cada objeto tiene un propietario y este controla cómo se establecen los permisos en el objeto y a quién 
+se conceden dichos permisos.  
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/take-ownership-of-files-or-other-objects">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Un atacante con este privilegio puede aprovechar el permiso de “<b>WRITE_OWNER</b>” que permite la modificación de un objeto al propio propietario. 
+Simplemente, se tendría que cambiar la posesión de un ejecutable de servicio o directorio al usuario actual y luego cambiarlo por un fichero 
+malicioso que permita la elevación de privilegios a SYSTEM. Para tomar la propiedad del fichero:
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">takeown /f 'C:\Windows\System32\[binario]'</code></pre>
+</div>
+<!-- Code-->
+

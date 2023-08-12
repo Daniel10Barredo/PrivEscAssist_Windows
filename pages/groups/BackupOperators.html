@@ -1,0 +1,20 @@
+<h1>Backup Operators</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Los miembros del grupo “Operadores de Copia de Seguridad” pueden realizar copias y restaurar archivos de un equipo, 
+    independientemente de los permisos que protejan a los archivos.
+</p>
+<p class="mainText">
+    A este grupos se le asigna por defecto dos privilegios interesantes para la escalada de privilegios que se han explicado 
+    en el apartado anterior: <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> y 
+    <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b>, que permiten copiar ficheros con información 
+    sensible o restaurar ficheros en lugares protegidos.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    La forma más común de aprovecharse de estos permisos sería poner un fichero malicioso en System32 con la intención de hacer 
+    Hijacking a un servicio que se vaya a ejecutar con un alto nivel de integridad como SYSTEM. Se puede consultar más información
+    el los privilegios correspondientes explicados en el punto anterior.
+</p>

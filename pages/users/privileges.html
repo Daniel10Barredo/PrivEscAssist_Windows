@@ -1,0 +1,39 @@
+<h1>Privilegios de usuario</h1>
+
+<p>
+    En el primer paso, se comprobaran los diferentes privilegios con los que cuenta el usuario para comprobar si este puede realizar 
+    alguna acción peligrosa que pueda ayudar a una escalada de privilegios. Puede ser interesante para ampliar la información revisar
+    el proyecto Priv2Admin en github.
+    <a class="linksref" target="_blank" href="https://github.com/gtworek/Priv2Admin">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+</p>
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Comprobación</h2>
+<p class="mainComment">Utiliza el siguiente comando para comprobar los privilegios <b><i>(es importante recordar que en la salida aunque aparezcan 
+    estos como deshabilitados no quiere decir que no los tenga)</i></b>.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">whoami /priv</code></pre>
+</div>
+<!-- Code-->
+
+
+<p>
+    Los privilegios peligrosos que puede aprovechar un atacante para una escalada de privilegios son los siguientes:
+</p>
+
+<div class="list-group">
+    <a role="button" href="#users/SeAssignPrimaryTokenPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeAssignPrimaryTokenPrivilege</a>
+    <a role="button" href="#users/SeImpersonatePrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeImpersonatePrivilege</a>
+    <a role="button" href="#users/SeBackupPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeBackupPrivilege</a>
+    <a role="button" href="#users/SeRestorePrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeRestorePrivilege</a>
+    <a role="button" href="#users/SeTakeOwnershipPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeTakeOwnershipPrivilege</a>
+    <a role="button" href="#users/SeCreateTokenPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeCreateTokenPrivilege</a>
+    <a role="button" href="#users/SeDebugPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeDebugPrivilege</a>
+    <a role="button" href="#users/SeLoadDriverPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeLoadDriverPrivilege</a>
+    <a role="button" href="#users/SeTcbPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeTcbPrivilege</a>
+    <a role="button" href="#users/SeManageVolumePrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">SeManageVolumePrivilege</a>
+</div>
+<br>

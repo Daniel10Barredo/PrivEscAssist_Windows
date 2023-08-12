@@ -1,0 +1,35 @@
+<h1>Protecciones del sistema</h1>
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Firewall</h2>
+<p class="mainComment">Comprobación del estado y la configuración del firewall.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">netsh firewall show state
+netsh firewall show config
+</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Antivirus</h2>
+<p class="mainComment">Nombre del antivirus que está utilizando.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntiVirusProduct Get displayName</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">Exclusiones de Windows Defender.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-ChildItem 'registry::HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions' -ErrorAction SilentlyContinue</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>AppLocker</h2>
+<p class="mainComment">Comprobar si hay restricciones de AppLocker.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections</code></pre>
+</div>
+<!-- Code-->
+

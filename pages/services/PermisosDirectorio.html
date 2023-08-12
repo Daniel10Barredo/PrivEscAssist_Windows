@@ -1,0 +1,77 @@
+<h1>Permisos en el Directorio</h1>
+
+<p class="mainComment">
+    Los servicios del sistema, generalmente son ejecutados en un nivel de integridad alto con SYSTEM y además, son instalados con programas 
+    de terceros que no siempre tienen en consideración las medidas de seguridad apropiadas, lo que puede dejar expuestos puntos débiles que 
+    los atacantes pueden aprovechar.
+</p>
+
+<p>
+    En algunos casos, los servicios no realizan adecuadamente una restricción de permisos sobre los binarios y directorios que son creados 
+    durante la instalación. Si un atacante puede manipular el binario del servicio, puede conseguir ejecución de código malicioso y realizar
+    una escalada de privilegios.
+</p>
+
+<h2 id="fauxiliar"><i class="bi bi-check-circle me-2"></i></i>Función Auxiliar</h2>
+<p class="mainComment">
+    Esta función está basada en PowerSploit y se encarga de comprobar si el usuario tiene permisos suficientes para modificar un dirtectorio o registro.<br>
+    <span class="text-success">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Algunos scripts de este apartado necesitan la siguiente función, simplemente copia y pega su 
+        contenido.
+    </span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i>Directorios De Servicios</h2>
+<p>
+    Este paso consiste en listar todas las ubicaciones de los binarios de cada servicio y comprobar uno a uno si el usuario puede llegar a 
+    modificar el binario o sus directorios.
+</p>
+<p class="mainComment">
+    Función automática en PowerShell que pasa por todas las rutas de cada servicio comprobando si el usuario puede modificar alguna de las rutas.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-WMIObject -Class win32_service | Where-Object {$_ -and $_.pathname} | ForEach-Object { if(ModifiablePath $_.pathname){ $_ } }
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD utilizando icalcs para comprobar los permisos, se busca que el usuario o los grupos a los que este 
+    pertenece pueda modificar (M) o bien tenga plenos permisos (F).
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista todos los servicios
+wmic service list brief
+#Información sobre un servicio (buscar la ruta al binario)
+sc qc [service]
+#Comprobar los permisos de la ruta
+icacls "C:\service path"
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    Para la comprobación de permisos de directorios de forma más intuitiva también son utilizadas las herramientas de Microsoft de Sysinternals 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/sysinternals/downloads/sysinternals-suite/">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">accesschk.exe /accepteula -dqv "C:\service path"</code></pre>
+</div>
+<!-- Code-->
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Si se puede modificar el binario, entonces se podrá simplemente cambiarlo por otro que contenga el código malicioso y luego reinciar el servicio.
+</p>

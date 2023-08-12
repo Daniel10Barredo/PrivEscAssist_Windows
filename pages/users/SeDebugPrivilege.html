@@ -1,0 +1,27 @@
+<h1>Debug Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva permite a un usuario asociar o abrir cualquier proceso, incluso un proceso que no poseen. Este derecho está pensado para los 
+desarrolladores que depuran nuevos componentes del sistema, pero si cae en manos de un atacante puede desembocar en acceso a componentes 
+confidenciales y críticos.
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/debug-programs">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Como se puede escribir y leer de cualquier proceso de la memoria, hay varias estrategias de inyección de memoria para realizar la escalada de privilegios, 
+evadiendo además la mayoría de soluciones de antivirus. Un ejemplo muy común sería con la utilización de herramientas como <b>mimikatz</b> para volcar el proceso 
+<b>Local Security Authority Subsystem Service (LSASS)</b>, encargado de la autenticación y que contiene todas las credenciales de los usuarios logeados en el sistema 
+o por ejemplo realizar una ejecución en un proceso de SYSTEM utilizando <b>psgetsys.ps1</b> 
+<a class="linksref" target="_blank" href="https://github.com/decoder-it/psgetsystem/blob/master/psgetsys.ps1">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a> y ejecutando.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">import-module psgetsys.ps1; [MyProcess]::CreateProcessFromParent([system_pid],[command_to_execute])</code></pre>
+</div>
+<!-- Code-->
+

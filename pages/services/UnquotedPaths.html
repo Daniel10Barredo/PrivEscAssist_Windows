@@ -1,0 +1,60 @@
+<h1>Unquoted Paths</h1>
+
+<p class="mainComment">
+    Los servicios del sistema, generalmente son ejecutados en un nivel de integridad alto con SYSTEM y además, son instalados con programas 
+    de terceros que no siempre tienen en consideración las medidas de seguridad apropiadas, lo que puede dejar expuestos puntos débiles que 
+    los atacantes pueden aprovechar.
+</p>
+<p>
+    En algunos casos, los servicios no utilizan comillas para escribir la ruta dónde se encuentra el ejecutable, y eso resulta en una vulnerabilidad 
+    que puede ser utilizada por un atacante si se aprovecha de la forma en la que Windows interpreta las rutas con espacios.
+</p>
+
+<h2 id="fauxiliar"><i class="bi bi-check-circle me-2"></i></i>Función Auxiliar</h2>
+<p class="mainComment">
+    Esta función está basada en PowerSploit y se encarga de comprobar si el usuario tiene permisos suficientes para modificar un dirtectorio o registro.<br>
+    <span class="text-success">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Algunos scripts de este apartado necesitan la siguiente función, simplemente copia y pega su 
+        contenido.
+    </span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Servicios sin comillas</h2>
+<p class="mainComment">
+    Este código recoge todas las rutas sin comillas y comprueba si el usuario puede editar alguno de las rutas derivadas de cada una según la interpretación
+    que realiza Windows normalmente.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">$vuln = Get-WmiObject -Class win32_service | Where-Object {$_ -and ($Null -ne $_.pathname) -and ($_.pathname.Trim() -ne '') -and (-not $_.pathname.StartsWith("`"")) -and (-not $_.pathname.StartsWith("'")) -and ($_.pathname.Substring(0, $_.pathname.ToLower().IndexOf('.exe') + 4)) -match '.* .*'}
+ForEach ($serv in $vuln) {$SplitPathArray = $serv.pathname.Split(' ');$ConcatPathArray = @();for ($i=0;$i -lt $SplitPathArray.Count; $i++) {$ConcatPathArray += $SplitPathArray[0..$i] -join ' '};ModifiablePath $ConcatPathArray}
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD e icalcs, aunque el proceso es algo más manual.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista todos los servicios auto sin comillas
+wmic service get name,displayname,pathname,startmode 2>nul |findstr /i "Auto" 2>nul |findstr /i /v "C:\Windows\\" 2>nul |findstr /i /v """
+#Comprobar los permisos del directorio y los subdirectorios como los interpreta Windows.
+icacls [service_path]
+</code></pre>
+</div>
+<!-- Code-->
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Si se puede modificar alguno de estos directorios, solamente habría que colocar un ejecutable malicioso con el nombre de la palabra pordonde corta la ruta y terminado
+    en .exe.
+</p>

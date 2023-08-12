@@ -1,0 +1,21 @@
+<h1>Load Driver Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva determina qué usuarios pueden cargar y descargar controladores de dispositivo dinámicamente y estos luego van a ser ejecutados con privilegios 
+elevados. Generalmente los grupos de operadores de impresora tienen este privilegio, sin embargo para que se pueda instalar un controlador necesita estar firmado.
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/load-and-unload-device-drivers">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Un atacante como está limitado a la firma de Windows, puede abusar de drivers vulnerables conocidos como capcom.sys <a class="linksref" target="_blank" href="https://github.com/FuzzySecurity/Capcom-Rootkit/blob/master/Driver/Capcom.sys">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a> que puede ser abusado 
+para ejecutar cualquier tipo de código y además está firmado por Windows. Una vez cargado solo habría que tirar el exploit correspondiente (para capcom 
+<a class="linksref" target="_blank" href="https://github.com/tandasat/ExploitCapcom">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>) y se conseguiría ejecución 
+como SYSTEM.
+</p>

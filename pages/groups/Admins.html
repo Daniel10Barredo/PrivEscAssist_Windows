@@ -1,0 +1,39 @@
+<h1>Administrators, Domain Admins, Enterprise Admins</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Los miembros del grupo Administradores tienen control total sobre el sistema. Este grupo puede realizar acciones como el acceso 
+    a cualquier objeto del sistema, cambiar la pertenencia de los grupos, gestionar usuarios e incluso administrar la pertenencia al 
+    propio grupo de administradores.
+</p>
+<p class="mainText">
+    En este apartado se distinguen entre tres rangos diferentes de administradores: el primer grupo tiene permisos a nivel local en 
+    una máquina, el administrador de dominio es el grupo que puede realizar la gestión de todo un dominio y finalmente el administrador 
+    de empresa solo existe en el dominio raíz de un bosque de directorios activos de dominios.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Aunque el usuario pertenezca al grupo administradores, todas las acciones del usuario que no se indique lo contrario serán ejecutadas 
+    con los permisos del usuario normal en un nivel de integridad media, y a la hora de querer crear un proceso con integridad alta con 
+    mayores privilegios es necesario poder sortear la protección de control de usuario (UAC).
+</p>
+<p>Para comprobar la política de UAC en el sistema</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">if ((Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA -eq 1) {
+    Write-Host "EnableLUA is equal to 1. Part or all of the UAC components are on."
+}
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainText">
+    En el caso de que tengamos acceso a una interfaz gráfica como por ejemplo a través de RDP solo habrá que aceptar la ejecución. Sin embargo, 
+    en caso contrario el atacante tendrá que realizar técnicas de bypass del UAC aprovechando alguna vulnerabilidad conocida de ejecutables que 
+    no pida la confirmación al usuario antes de realizar la escalada de privilegios. Para este proceso resulta interesante las diversas técnicas 
+    recopiladas en el proyecto de github UACME.
+    <a class="linksref" target="_blank" href="https://github.com/hfiref0x/UACME">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+</p>

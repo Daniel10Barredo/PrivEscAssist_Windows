@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta author="Daniel Diez Barredo">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrivEscAssist</title>
+    <meta description="Herramienta de asistencia a la escalada de privilegios manual en sistemas Windows, que ofrece una guía metodológica basada en checklist y con explicaciones detalladas de cada paso a seguir.">
+    <meta keywords="Escalada de privilegios, windows">
+    <!-- Scripts -->
+    <script src="js/jquery-3.7.0.min.js"></script>
+    <script src="js/jquery.cookie.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/rainbow-custom.min.js"></script>
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/glitch.css">
+    <link rel="stylesheet" href="css/obsidian.css">
+    <link rel="stylesheet" href="css/fontCustom.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+    <!-- Cargador inicial web -->
+    <section id="preloader" class="dan_preloader">
+        <div id="spinner" class="dan_spinner">
+            <span class="spinner-rotate"></span> 
+        </div>
+    </section>
+
+    <!-- Cuerpo principal de contenido-->
+    <section class="ms-0 me-0 row" id="main">
+    
+        <!-- Secc izquierda -->
+        <nav class="navbar navbar-dark col-12 col-md-3 h-100" id="navIzquierda">
+            <!-- Logo -->
+            <div class="col-md-12 col-9" id="logo">
+                <a href="/">
+                    <i class="bi bi-box text-success me-2"></i> PrivEscAssist 
+                </a>
+            </div>
+            <!-- Secciones y subsecciones -->
+            <button class="navbar-toggler d-md-none col-2 fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse dont-collapse-sm text-light navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="me-1 fs-5">◍</span> <span class="sub-tog sub-tog-down"> Enumeración </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#enum/sistema" class="internal_link nav-subitem"><input type="checkbox"/> Sistema</div></li>
+                            <li><div href="#enum/usuarios" class="internal_link nav-subitem"><input type="checkbox"/></i> Usuarios/Grupos</div></li>
+                            <li><div href="#enum/programas" class="internal_link nav-subitem"><input type="checkbox"/></i> Programas</div></li>
+                            <li><div href="#enum/protecciones" class="internal_link nav-subitem"><input type="checkbox"/></i> Protecciones</div></li>
+                            <li><div href="#enum/redes" class="internal_link nav-subitem"><input type="checkbox"/></i> Redes</div></li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">1</span><span class="sub-tog sub-tog-down">Usuario </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#users/privileges" class="internal_link nav-subitem"><input type="checkbox"/> Privilegios</div>
+                                <div href="#users/SeAssignPrimaryTokenPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>AssignPrimaryToken</div>
+                                <div href="#users/SeImpersonatePrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Impersonate</div>
+                                <div href="#users/SeBackupPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Backup</div>
+                                <div href="#users/SeRestorePrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Restore</div>
+                                <div href="#users/SeTakeOwnershipPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>TakeOwnership</div>
+                                <div href="#users/SeCreateTokenPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>CreateToken</div>
+                                <div href="#users/SeDebugPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Debug</div>
+                                <div href="#users/SeLoadDriverPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>LoadDriver</div>
+                                <div href="#users/SeTcbPrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Tcb</div>
+                                <div href="#users/SeManageVolumePrivilege" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>ManageVolume</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">2</span><span class="sub-tog sub-tog-down">Grupos </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#groups/usergroups" class="internal_link nav-subitem"><input type="checkbox"/> Grupos del usuario</div>
+                                <div href="#groups/Admins" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Admins</div>
+                                <div href="#groups/BackupOperators" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>BackupOperators</div>
+                                <div href="#groups/DnsAdmins" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>DnsAdmins</div>
+                                <div href="#groups/ExchangeWindowsPermissions" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>ExchangeWindows</div>
+                                <div href="#groups/HyperVAdministrators" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>HyperVAdminis</div>
+                                <div href="#groups/OrganizationManagement" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>Org.Management</div>
+                                <div href="#groups/PrintOperators" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>PrintOperators</div>
+                                <div href="#groups/AccountOperators" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>AccountOperators</div>
+                                <div href="#groups/ServerOperators" class="internal_link nav-subsubitem"><i class="bi bi-node-plus me-2"></i>ServerOperators</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">3</span><span class="sub-tog sub-tog-down">Sistema Operativo </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#os/KernelExploits" class="internal_link nav-subitem"><input type="checkbox"/> Exploits de kernel</div></li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">4</span><span class="sub-tog sub-tog-down">Servicios </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#services/PermisosDirectorio" class="internal_link nav-subitem"><input type="checkbox"/> Permisos directorio</div></li>
+                            <li><div href="#services/PermisosRegistro" class="internal_link nav-subitem"><input type="checkbox"/></i> Permisos registro</div></li>
+                            <li><div href="#services/UnquotedPaths" class="internal_link nav-subitem"><input type="checkbox"/></i> Unquoted Paths</div></li>
+                            <li><div href="#services/DLLHijacking" class="internal_link nav-subitem"><input type="checkbox"/></i> DLL Hijacking</div></li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">5</span><span class="sub-tog sub-tog-down">Credenciales </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#credentials/CredManager" class="internal_link nav-subitem"><input type="checkbox"/> Cred Manager</div></li>
+                            <li><div href="#credentials/Autologon" class="internal_link nav-subitem"><input type="checkbox"/></i> Autologon</div></li>
+                            <li><div href="#credentials/SamSystem" class="internal_link nav-subitem"><input type="checkbox"/></i> SAM y SYSTEM</div></li>
+                            <li><div href="#credentials/Registro" class="internal_link nav-subitem"><input type="checkbox"/></i> Registro</div></li>
+                            <li><div href="#credentials/Ficheros" class="internal_link nav-subitem"><input type="checkbox"/></i> Ficheros</div></li>
+                            <li><div href="#credentials/Navegador" class="internal_link nav-subitem"><input type="checkbox"/></i> Navegador</div></li>
+                            <li><div href="#credentials/Wifi" class="internal_link nav-subitem"><input type="checkbox"/></i> Wifi</div></li>
+                            <li><div href="#credentials/VariablesEntorno" class="internal_link nav-subitem"><input type="checkbox"/></i> Variables entorno</div></li>
+                            <li><div href="#credentials/Historiales" class="internal_link nav-subitem"><input type="checkbox"/></i> Historiales</div></li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">6</span><span class="sub-tog sub-tog-down">Autorun </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#autorun/Arranque" class="internal_link nav-subitem"><input type="checkbox"/> Arranque</div></li>
+                            <li><div href="#autorun/TareasProgramadas" class="internal_link nav-subitem"><input type="checkbox"/></i> Tareas Programadas</div></li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">7</span><span class="sub-tog sub-tog-down">Otros </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#others/AlwaysInstallElevated" class="internal_link nav-subitem"><input type="checkbox"/> AlwaysInstallElevated</div></li>
+                            <li><div href="#others/Phising" class="internal_link nav-subitem"><input type="checkbox"/> Phising</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Secc derecha -->
+        <div id="mainRight" class="col-12 col-md-9 p-0 ps-md-3">
+
+            <!-- Home -->
+            <div id="homeNav" class="col-12"><i class="bi bi-house pe-1"></i>- <span id="hntext">Escalada De Privilegios En Windows</span></div>
+
+            <!-- Contenido principal -->
+            <div id="mainContent">
+                <h1 id="introTextMain" class="text-center">Escalada de Privilegios En Windows</h1>
+                <p class="text-center"><b>
+                    Herramienta de asistencia a la escalada de privilegios manual en sistemas Windows, que ofrece una guía metodológica basada en checklist y
+                    con explicaciones detalladas de cada paso a seguir.<br>
+                    Sigue paso a paso cada uno de los puntos del menú de la izquierda.</b>
+                </p>
+                <div class="text-center">
+                    <img id="mainImag" class="img img-fluid mainImag col-12 col-md-4" src="/media/imag/nosignal.jpg">
+                </div>
+                <br>
+                <p class="mainComment">
+                    Esta herramienta surge como Trabajo de Fin de Máster en Seguridad Ofensiva OSCP. Si necesitas consultar el TFM está disponible <a href="#">aquí</a>.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="modal_info" class="modal-body">
+                    ...
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer class="footer text-center text-md-end pe-0 pe-md-5">
+        Daniel Diez Barredo | © 2023
+    </footer>
+    
+    <script src="js/main.js"></script>
+
+</body>
+</html>

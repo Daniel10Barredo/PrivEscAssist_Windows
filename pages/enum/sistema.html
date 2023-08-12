@@ -1,0 +1,49 @@
+<h1>Información sobre el sistema</h1>
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Información del sistema</h2>
+<p class="mainComment">Recogida de información más relevante del sistema operativo.</p>
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">systeminfo</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Unidades de almacenamiento</h2>
+<p class="mainComment">Enumeración de los dispositivos conectados.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">wmic logicaldisk get caption,description,providername</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell"></code>Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| ft Name,Root</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Variables de entorno</h2>
+<p class="mainComment">Enumeración de las diferentes variables de entorno. En ocasiones es posible encontrar información interesante sobre el sistema o incluso credenciales.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">set</code></pre>
+</div>
+<!-- Code-->
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell"></code>Get-ChildItem env: | Format-Table -Wrap</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i></i>Drivers</h2>
+<p class="mainComment">Enumeración de los drivers o controladores instalados en la máquina.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">driverquery /SI</code></pre>
+</div>
+<!-- Code-->
+

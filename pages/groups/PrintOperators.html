@@ -1,0 +1,14 @@
+<h1>Print Operators</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Los miembros de este grupo pueden administrar, crear, compartir y eliminar las impresoras que hay conectadas y administrar 
+    los objetos de impresora. Los miembros de este grupo también podrían iniciar sesión localmente en los controladores de 
+    dominio e incluso apagarlos.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Este grupo tiene por defecto el permiso de <b><span href="#users/SeLoadDriverPrivilege" class="internal_link text-success">SeLoadDriverPrivilege</span></b>, que como vimos en el punto anterior nos permite instalar drivers. 
+    Si un atacante instala un driver malicioso puede explotarlo para conseguir ejecución como SYSTEM y elevar así los privilegios.
+</p>

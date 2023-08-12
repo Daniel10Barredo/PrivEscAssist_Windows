@@ -1,0 +1,75 @@
+<h1>Tareas Programadas</h1>
+
+<p class="mainComment">
+    El sexto punto de la metodología consiste en la búsqueda de posibles vulnerabilidades en las aplicaciones que son ejecutadas 
+    automáticamente cuando se cumple una condición determinada en el sistema. Estas tareas permiten realizar tareas de gestión 
+    sin intervención del usuario, pero también pueden presentar riesgos cuando no están correctamente configuradas.
+</p>
+
+<p>
+    Las tareas programadas son aplicaciones que se ejecutan de forma automática a una determinada fecha o asociadas a un determinado 
+    evento. Las características de cada una de estas tareas está definida en un fichero XML protegido en <b>%windir%\System32\Tasks</b>
+    y referenciados también desde el propio registro.
+</p>
+
+<h2 id="fauxiliar"><i class="bi bi-check-circle me-2"></i></i>Función Auxiliar</h2>
+<p class="mainComment">
+    Esta función está basada en PowerSploit y se encarga de comprobar si el usuario tiene permisos suficientes para modificar un dirtectorio o registro.<br>
+    <span class="text-success">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Algunos scripts de este apartado necesitan la siguiente función, simplemente copia y pega su 
+        contenido.
+    </span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+</code></pre>
+</div>
+<!-- Code-->
+
+<h2><i class="bi bi-check-circle me-2"></i>Permisos de Directorios</h2>
+<p class="mainComment">
+    Este paso consiste en listar todas las ubicaciones de los binarios de cada tarea programada y comprobar si el usuario puede llegar a 
+    modificar el binario o sus directorios.<br>
+    <span class="text-success"><i class="bi bi-exclamation-triangle-fill me-1"></i>Requiere función auxiliar</span>
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-ScheduledTask -ErrorAction Ignore | where {$_.principal.RunLevel -eq "Highest"} | ForEach-Object { if(ModifiablePath $_.Actions.Execute){ $_ } }
+#Para listar los que se ejecutan con altos privilegios
+Get-ScheduledTask | where {$_.principal.RunLevel -eq "Highest"} | ft TaskName,TaskPath,State
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    También es posible realizar una comprobación manual con CMD e icalcs de la siguiente forma.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">#Lista las tareas programadas
+schtasks /query /fo LIST /v
+#Comprobación de cada 
+icacls "C:\path to command"
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<h2><i class="bi bi-check-circle me-2"></i>Monitorización de procesos</h2>
+<p class="mainComment">
+    En ocasiones, el usuario actual no podrá listar las tareas programadas que se ejecutan de forma más privilegiada, sin embargo se podría llegar 
+    a monitorizar durante un tiempo las teareas que son ejecutadas periódicamente en el sistema con el siguiente código.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">while($true)
+{
+    $process = Get-WmiObject Win32_Process | Select-Object CommandLine
+    Start-Sleep 1
+    $process2 = Get-WmiObject Win32_Process | Select-Object CommandLine
+    Compare-Object -ReferenceObject $process -DifferenceObject $process2
+}
+</code></pre>
+</div>
+<!-- Code-->

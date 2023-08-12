@@ -1,0 +1,22 @@
+<h1>Restore Privilege</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+Esta directiva determina qué usuarios pueden omitir los permisos de archivo, directorio, registro y otros objetos persistentes cuando tratan de realizar 
+una restauración de archivos y directorios de una copia de seguridad. 
+<a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows/security/threat-protection/security-policy-settings/restore-files-and-directories">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
+</p>
+<p class="mainText">
+Este privilegio suele ir asociado al anterior y también se trata de un permiso muy peligroso, ya que se puede crear un fichero malicioso en cualquier 
+parte del sistema pudiendo por ejemplo modificar un servicio para que se ejecute como SYSTEM.
+</p>
+<h3>◍ Ataque</h3>
+<p class="mainText">
+Para la explotación el primer paso es la activación de este permiso, para esto se puede utilizar el script <b>EnableSeRestorePrivilege.ps1</b> <a class="linksref" target="_blank" href="https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeRestorePrivilege.ps1">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>.
+ Y ya tendríamos acceso de escritura a System32, pudiendo remplazar cualquier fichero de servicio o realizando un DLLHijacking a algún servicio que
+ se ejecute con un alto nivel de integridad.
+</p>

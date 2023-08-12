@@ -1,0 +1,17 @@
+<h1>Hyper-V Administrators</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    Los miembros del grupo de Administradores de Hyper-V tienen acceso completo y sin restricciones a todas las características 
+    de la virtualización de Microsoft. Agregar miembros a este grupo ayuda a reducir el número de miembros en el grupo de Administradores.
+</p>
+
+<h3>◍ Ataque</h3>
+<p class="mainText">
+    Existe un problema a la hora de eliminar una máquina virtual, vmms.exe intenta restaurar los permisos del archivo original .vhdx 
+    correspondiente y lo hace como SYSTEM, sin impersonar al usuario. Es posible de esta forma crear un enlace duro para apuntar a un 
+    archivo de SYSTEM protegido y cambiarle los permisos completos, permitiendo realizar así una escalada de privilegios. 
+    <a class="linksref" target="_blank" href="https://decoder.cloud/2020/01/20/from-hyper-v-admin-to-system/">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+</p>
