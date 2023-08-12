@@ -85,7 +85,7 @@ async function copyCode(block, button) {
 function goToPage() {
     var hash = window.location.hash.replace("#","");
     if(hash != ""){
-        var url = "/pages/"+hash
+        var url = "./pages/"+hash
         //Se realiza la petición a la URL
         $.get(url+".html", function(data) {
             //Si está en móvil pliega el menú
@@ -118,8 +118,8 @@ function mobileClose() {
 /* Transición de imágen hacker */
 function hackerTransition() {
     if(window.location.hash.replace("#","")==""){
-        $("#mainImag").attr("src","/media/imag/transition.gif").delay(2500).queue(function() {
-            $("#mainImag").attr("src","/media/imag/hacker.gif");
+        $("#mainImag").attr("src","./media/imag/transition.gif").delay(2500).queue(function() {
+            $("#mainImag").attr("src","./media/imag/hacker.gif");
             $(this).dequeue();
          });
     }
