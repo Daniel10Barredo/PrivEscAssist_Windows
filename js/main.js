@@ -95,6 +95,7 @@ function goToPage() {
                 $(this).html(data).slideDown(300,function(){Rainbow.color();addCopyButtons();});
                 $("#hntext").html("/"+hash.replace("/"," /"));
                 $(this).find(".internal_link").on( "click",linkInternoHook);
+                SetCurrentPageInMenu();
               })
         });
     }
@@ -106,6 +107,19 @@ function linkInternoHook() {
     window.location=window.location.pathname+hash;
     goToPage();
 }
+
+/*Cambiar estilo del link donde se encuentra*/
+function SetCurrentPageInMenu() {
+    for (var item of  $(".internal_link")) {
+        if(item.getAttribute("href") == window.location.hash){
+            item.classList.add("SelectedItem");
+        }
+        else{
+            item.classList.remove("SelectedItem");
+        }
+    }
+}
+
 
 /*En móvil, pliega menu al pulsar link*/
 function mobileClose() {

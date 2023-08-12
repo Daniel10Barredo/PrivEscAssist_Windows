@@ -132,6 +132,10 @@
     color: #36593b;
     text-decoration: line-through;
 }
+.SelectedItem{
+    color: #097654!important;
+    font-weight: bold;
+}
 .submenu-custom{
     padding: 0.4em 0em;
 }
