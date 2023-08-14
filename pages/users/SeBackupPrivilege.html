@@ -22,21 +22,77 @@ Para la explotación el primer paso es la activación de este permiso, para esto
 </p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet"><code data-language="shell">mkdir c:\Temp
-reg save hklm\sam c:\Temp\sam
-reg save hklm\system c:\Temp\system
+<pre class="code_snipet"><code data-language="shell">reg save hklm\sam .\SAM
+reg save hklm\system .\SYSTEM
 </code></pre>
 </div>
 <!-- Code-->
 
 <p class="mainText">
-Finalmente podremos extraer los hashes NTLM con mimikatz y reutilizarlos haciendo ataques "Pass The Hash" o intantar crackearlos con John o Hashcat.
+Finalmente podremos extraer los hashes en nuestra máquina local y reutilizarlos haciendo ataques "Pass The Hash" o intantar crackearlos con John o Hashcat.
 <a class="linksref" target="_blank" href="https://www.hackingarticles.in/windows-privilege-escalation-sebackupprivilege/">
     <i class="bi bi-box-arrow-up-right"></i>
 </a>
 </p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet"><code data-language="shell">lsadump::sam /system:[system_file] /sam:[sam_file]</code></pre>
+<pre class="code_snipet"><code data-language="shell">samdump2 SYSTEM SAM -o sam.txt</code></pre>
 </div>
 <!-- Code-->
+
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Para crackear
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">john --format=NT --wordlist=rockyou.txt sam.txt
+</code></pre>
+</div>
+<!-- Code-->
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2><i class="icon-skull me-2"></i></i>Ejemplo</h2>
+<br>
+<p>
+    Iniciamos comprobando que efectivamente tenemos el privilegio de <b>SeBackupPrivilege</b>
+</p>
+
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seRestore_1.png" />
+
+<p>
+    Como se puede pareciar en la figura anterior el permiso está deshabilitado, para realizar la habilitación 
+    ejecutamos el script de powershell <b>EnableSeBackupPrivilege.ps1</b>
+</p>
+
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_1.png" />
+
+<p>
+    Con el permiso habilitado, realizamos una copia del registro de SAM y SYSTEM a nuestra máquina atacante directamente
+</p>
+
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_2.png" />
+
+<p>
+    En la máquina Kali realizamos la extracción de los hashes NTLM con el comando <b>samdump2</b>
+</p>
+
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_3.png" />
+
+<p>
+    Estos hashes los almacenamos en un fichero <b>sam.txt</b> y podemos crackearlos con John The Ripper como en este ejemplo
+</p>
+
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_4.png" />
+
+<p>
+    O se puede intentar conseguir realizar un ataque de Pass The Hash para conseguir acceder directamente a la máquina sin la necesidad de 
+    conocer las credenciales.
+</p>
+
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_5.png" />

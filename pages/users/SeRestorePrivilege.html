@@ -20,3 +20,28 @@ Para la explotación el primer paso es la activación de este permiso, para esto
  Y ya tendríamos acceso de escritura a System32, pudiendo remplazar cualquier fichero de servicio o realizando un DLLHijacking a algún servicio que
  se ejecute con un alto nivel de integridad.
 </p>
+
+<h2><i class="icon-skull me-2"></i></i>Ejemplo</h2>
+<br>
+<p>
+    Comprobamos que tenemos el permiso <b>SeRestorePrivilege</b> pero aparece deshabilitado.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seRestore_1.png" />
+<p>
+    Utilizaremos el script <b>EnableSeREstorePrivilege.ps1</b> para habilitar el permiso.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seRestore_2.png" />
+<p>
+    Ahora buscaremos una servicio que se ejecute de forma manual como SYSTEM que podamos manipular con este permiso, en este caso 
+    vamos a utilizar el servicio <b>vds (Virtual Disk Service)</b> que administra una amplia gama de configuraciones de almacenamiento.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seRestore_3.png" />
+<p>
+    Para este ataque vamos a sustituir el binario por una shell reversa, para eso primero movemos el binario original y luego ponemos nuestra 
+    shell reversa en su lugar. Finalmente para conseguir la ejecución, reiniciamos el servicio como aparece en la siguente figura.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seRestore_4.png" />
+<p>
+    Al ejecutarse obtenemos la conexión reversa como SYSTEM y reestablecemos nuevamente el binario del servicio en su lugar!!
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seRestore_5.png" />
