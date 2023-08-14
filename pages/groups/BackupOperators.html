@@ -9,19 +9,28 @@
     A este grupos se le asigna por defecto dos privilegios interesantes para la escalada de privilegios que se han explicado 
     en el apartado anterior: <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> y 
     <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b>, que permiten copiar ficheros con información 
-    sensible o restaurar ficheros en lugares protegidos.
+    sensible o restaurar ficheros en lugares protegidos. 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/understand-security-groups#backup-operators">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
 </p>
 
 <h3>◍ Ataque</h3>
 <p class="mainText">
     Inicialmente deberíamos comprobar si tenemos los privilegios por defecto <b>SeBackupPrivilege</b> y <b>SeRestorePrivilege</b> estén activos o no, como se 
     indica en la fase de <b><span href="#users/privileges" class="internal_link text-success">enumeración de privilegios</span></b>. 
+    En el caso de que no aparezcan dichos privilegios, se necesita pasar a un nivel alto de integridad, para ello hay que realizar alguna de las técnicas 
+    sugeridas en la sección de <b><span href="#info/UAC" class="internal_link text-success">Técnicas de bypass del UAC</span></b>.
 </p>
+<div class="list-group">
+    <a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
+</div>
+<br>
 <p class="mainText">
-    En el caso de que no aparezcan dichos privilegios se necesita pasar a un nivel alto de integridad, para ello hay que realizar alguna de las técnicas 
-    sugeridas de <b>Bypass UAC</b>
-</p>
-<p class="mainText">
-    Cuando aparezcan los permisos, tenemos dos opciones: Realizar un volcado de SAM y SYSTEM como indica en <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> 
+    <b>Cuando tengamos los permisos</b> (habilitados o no), tenemos dos opciones: Realizar un volcado de SAM y SYSTEM como indica en <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> 
     o bien se puede intentar sustituir algún binario de servicio y buscar la ejecución como SYSTEM como indica en <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b>.
 </p>
+<div class="list-group">
+    <a role="button" href="#users/SeBackupPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; SeBackupPrivilege</a>
+    <a role="button" href="#users/SeRestorePrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; SeRestorePrivilege</a>
+</div>

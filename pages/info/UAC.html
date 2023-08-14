@@ -1,0 +1,139 @@
+<h1>User Account Control</h1>
+
+<h3>◍ Explicación</h3>
+<p class="mainText">
+    El <b>control de cuentas de usuario</b>, o UAC por sus siglas en inglés, es una medida de seguridad introducida a partir de Windows Vista con 
+    la intención de mejorar la seguridad del sistema.
+</p>
+<p class="mainText">
+    En el proceso de instalación por defecto, Windows crea un usuario estándar que pertenece al grupo de administradores locales. Sin embargo, 
+    resultaría peligroso que el usuario habitual tuviera de forma continuada privilegios elevados en el sistema. Es por esta razón por la que 
+    todos los procesos serán ejecutados con permisos de usuario estándar y en el caso de que se requieran permisos de administración, el usuario 
+    tendrá que dar su consentimiento en un cuadro de texto.
+</p>
+<p class="mainText">
+    Para que Windows consiga diferenciar y aislar los diferentes procesos con diferentes permisos ejecutados bajo un mismo usuario, UAC hace uso 
+    del control de integridad del MIC (Mandatory Integrity Control).
+    Los niveles de integridad son una etiqueta que se asocia a un proceso e indica el nivel de confianza que se requiere para poder acceder a este. 
+    De forma que un objeto que se esté ejecutando en un nivel de integridad menor, no pueda acceder a otro objeto con un nivel de integridad mayor. 
+</p>
+
+
+<h3>◍ Bypass UAC</h3>
+<p class="mainText">
+    Estas técnicas permiten a un atacante saltarse el proceso de notificación al usuario para la elevación de privilegios, pasando de integridad media 
+    de un usuario estándar perteneciente al grupo administradores, a conseguir la ejecución con integridad alta con permisos administrativos.
+</p>
+<p class="mainText">
+    Dependiendo de la configuración de notificaciones del UAC es posible aprovecharse de algunos binarios del sistema con el flag autoElevate activado 
+    que permitiría la ejecución sin ninguna notificación al usuario.
+</p>
+<p class="mainText">
+    Existen múltiples binarios del sistema que han sido descubiertos por investigadores a lo largo del tiempo con autoElevate activado y con diversos 
+    problemas de configuración o permisos de acceso. De modo que un atacante podría aprovecharse para manipular estos binarios o sus configuraciones 
+    e introducir código malicioso en un proceso de alta integridad sin ningún tipo de alertas.
+</p>
+
+
+<h2>◍ TÉCNICAS</h2>
+<p class="mainComment">Para comprobar la política de UAC en el sistema</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">if ((Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA -eq 1) {
+    Write-Host "EnableLUA is equal to 1. Part or all of the UAC components are on."
+}
+</code></pre>
+</div>
+<!-- Code-->
+<p class="mainComment">
+    Estas son algunas de las técnicas más conocidas en relación a los sistemas operativos a los que puede afectar cada una:
+</p>
+
+<table class="table table-dark table-striped rounded-3">
+    <thead class="">
+        <th scope="col">Técnica</th>
+        <th scope="col">Sistemas Afectados</th>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://www.activecyber.us/activelabs/windows-uac-bypass">
+                    Win Store
+                </a>
+            </th>
+            <td class="fst-italic">Win 10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://github.com/bufferbandit/silent_cleanup_uac_bypass">
+                    Silent Cleanup
+                </a>
+            </th>
+            <td class="fst-italic">Win 7,8,10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://github.com/gushmazuko/WinBypass/blob/master/SluiHijackBypass.ps1">
+                    Slui Hijack
+                </a>
+            </th>
+            <td class="fst-italic">Win 8,10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://github.com/L3cr0f/DccwBypassUAC">
+                    WinSxS
+                </a>
+            </th>
+            <td class="fst-italic">Win 7,8,10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://gist.github.com/netbiosX/54a305a05b979e13d5cdffeba5436bcc">
+                    Sdclt
+                </a>
+            </th>
+            <td class="fst-italic">Win 10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://gist.github.com/clavoillotte/f2fba9fa4ba8db14093a62164963d4a9">
+                    Dotnet Profiler
+                </a>
+            </th>
+            <td class="fst-italic"> Win 7,8,10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://github.com/gushmazuko/WinBypass/blob/master/FodhelperBypass.ps1">
+                    Fod Helper
+                </a>
+            </th>
+            <td class="fst-italic"> Win 10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://github.com/gushmazuko/WinBypass/blob/master/EventVwrBypass.ps1">
+                    Event Viewer
+                </a>
+            </th>
+            <td class="fst-italic"> Win 7,8,10</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <a class="linksref" target="_blank" href="https://gist.github.com/mattifestation/b4072a066574caccfa07fcf723952d54">
+                    Disk Cleanup
+                </a>
+            </th>
+            <td class="fst-italic"> Win 10</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<p class="mainText">
+    También resulta interesante las diversas técnicas recopiladas en el proyecto de github UACME.
+    <a class="linksref" target="_blank" href="https://github.com/hfiref0x/UACME">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+</p>

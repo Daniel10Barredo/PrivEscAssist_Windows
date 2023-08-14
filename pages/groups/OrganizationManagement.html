@@ -11,7 +11,16 @@
 <p class="mainText">
     Una atacante podría incluir a su usuario al grupo Permisos de <b><span href="#groups/ExchangeWindowsPermissions" class="internal_link text-success">Windows Exchange</span></b> visto anteriormente y a partir de ahí 
     proceder con la escalada de privilegios conocida.
-    <a class="linksref" target="_blank" href="https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/">
-        <i class="bi bi-box-arrow-up-right"></i>
-    </a>
 </p>
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Añadimos un usuario al grupo 'Exchange Windows Permissions'
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">$user = Get-DomainUser -Identity <USER>
+$group = Get-DomainGroup -Identity 'Exchange Windows Permissions'
+Add-DomainGroupMember -Identity $group -Members $user -Verbose
+</code></pre>
+</div>
+<!-- Code-->

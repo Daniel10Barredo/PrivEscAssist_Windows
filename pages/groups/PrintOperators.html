@@ -4,11 +4,29 @@
 <p class="mainText">
     Los miembros de este grupo pueden administrar, crear, compartir y eliminar las impresoras que hay conectadas y administrar 
     los objetos de impresora. Los miembros de este grupo también podrían iniciar sesión localmente en los controladores de 
-    dominio e incluso apagarlos.
+    dominio e incluso apagarlos. 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/understand-security-groups#print-operators">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
 </p>
 
 <h3>◍ Ataque</h3>
 <p class="mainText">
-    Este grupo tiene por defecto el permiso de <b><span href="#users/SeLoadDriverPrivilege" class="internal_link text-success">SeLoadDriverPrivilege</span></b>, que como vimos en el punto anterior nos permite instalar drivers. 
-    Si un atacante instala un driver malicioso puede explotarlo para conseguir ejecución como SYSTEM y elevar así los privilegios.
+    Inicialmente deberíamos comprobar si tenemos el privilegio por defecto <b>SeLoadDriverPrivilege</b>, como se 
+    indica en la fase de <b><span href="#users/privileges" class="internal_link text-success">enumeración de privilegios</span></b>. 
+    En el caso de que no aparezca, se necesita pasar a un nivel alto de integridad, para ello hay que realizar alguna de las técnicas 
+    sugeridas en la sección de <b><span href="#info/UAC" class="internal_link text-success">Técnicas de bypass del UAC</span></b>.
 </p>
+<div class="list-group">
+    <a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
+</div>
+<br>
+
+<p class="mainText">
+    Una vez que el permiso aparece, nos podemos dirigir a la técnica de explotación del permiso <b>SeLoadDriverPrivilege</b>,
+    que como vimos en el punto anterior nos permite instalar drivers siempre que estén firmados por Microsoft. 
+    Si un atacante instala un driver con una vulnerabilidad conocida podría explotarlo para conseguir ejecución como SYSTEM y elevar así los privilegios.
+</p>
+<div class="list-group">
+    <a role="button" href="#users/SeLoadDriverPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; SeLoadDriverPrivilege</a>
+</div>

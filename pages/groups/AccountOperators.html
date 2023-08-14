@@ -2,9 +2,12 @@
 
 <h3>◍ Explicación</h3>
 <p class="mainText">
-    Los miembros del grupo de “Operadores de Cuenta” tiene privilegios sobre la creación de cuentas de usuario. Los miembros de este grupo 
+    Los miembros del grupo de <b>Operadores de Cuenta</b> tiene privilegios sobre la creación de cuentas de usuario. Los miembros de este grupo 
     pueden crear y modificar la mayoría de los tipos de cuentas, incluidas las cuentas para los usuarios, los grupos locales y los grupos 
-    globales. Este grupo además podrá iniciar sesión localmente dentro del controlador de dominio.
+    globales. Este grupo además podrá iniciar sesión localmente dentro del controlador de dominio. 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/understand-security-groups#account-operators">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
 </p>
 
 <h3>◍ Ataque</h3>
@@ -13,7 +16,21 @@
     agregar a un usuario al grupo <b><span href="#groups/DNSAdmins" class="internal_link text-success">DNSAdmins</span></b> o ponerlo como 
     <b><span href="#groups/ExchangeWindowsPermissions" class="internal_link text-success">“Exchange Windows Permissions”</span></b> y utilizar las técnicas 
     de escalada de cada caso.
-    <a class="linksref" target="_blank" href="https://www.whiteoaksecurity.com/blog/account-operators-privilege-escalation/">
-        <i class="bi bi-box-arrow-up-right"></i>
-    </a>
 </p>
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Una sugerencia sería añadir al grupo DNSAdmins el usuario actual:
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">Add-ADGroupMember -Identity "DNSAdmins" -Members AO
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainText">
+    Y continuar con la explotación del grupo <b>DNSAdmins</b>
+</p>
+<div class="list-group">
+    <a role="button" href="#groups/DNSAdmins" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; DNSAdmins</a>
+</div>

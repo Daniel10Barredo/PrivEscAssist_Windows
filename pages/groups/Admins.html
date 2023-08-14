@@ -9,31 +9,26 @@
 <p class="mainText">
     En este apartado se distinguen entre tres rangos diferentes de administradores: el primer grupo tiene permisos a nivel local en 
     una máquina, el administrador de dominio es el grupo que puede realizar la gestión de todo un dominio y finalmente el administrador 
-    de empresa solo existe en el dominio raíz de un bosque de directorios activos de dominios.
+    de empresa solo existe en el dominio raíz de un bosque de directorios activos de dominios. 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/understand-security-groups#administrators">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
 </p>
 
 <h3>◍ Ataque</h3>
 <p class="mainText">
     Aunque el usuario pertenezca al grupo administradores, todas las acciones del usuario que no se indique lo contrario serán ejecutadas 
     con los permisos del usuario normal en un nivel de integridad media, y a la hora de querer crear un proceso con integridad alta con 
-    mayores privilegios es necesario poder sortear la protección de control de usuario (UAC).
+    mayores privilegios es necesario poder sortear la protección de control de usuario (UAC). Es por eso que primero deberemos comprobar 
+    los privilegios a los que podemos acceder siguiendo la sección <b><span href="#users/privileges" class="internal_link text-success">enumeración de privilegios</span></b>,
+    y si no los tenemos procedermos a realizar un Bypass UAC.
 </p>
-<p>Para comprobar la política de UAC en el sistema</p>
-<!-- Code snipet-->
-<div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">if ((Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA -eq 1) {
-    Write-Host "EnableLUA is equal to 1. Part or all of the UAC components are on."
-}
-</code></pre>
-</div>
-<!-- Code-->
 
 <p class="mainText">
     En el caso de que tengamos acceso a una interfaz gráfica como por ejemplo a través de RDP solo habrá que aceptar la ejecución. Sin embargo, 
-    en caso contrario el atacante tendrá que realizar técnicas de bypass del UAC aprovechando alguna vulnerabilidad conocida de ejecutables que 
-    no pida la confirmación al usuario antes de realizar la escalada de privilegios. Para este proceso resulta interesante las diversas técnicas 
-    recopiladas en el proyecto de github UACME.
-    <a class="linksref" target="_blank" href="https://github.com/hfiref0x/UACME">
-        <i class="bi bi-box-arrow-up-right"></i>
-    </a>
+    en caso contrario accede al siguiente enlace. 
 </p>
+
+<div class="list-group">
+<a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
+</div>

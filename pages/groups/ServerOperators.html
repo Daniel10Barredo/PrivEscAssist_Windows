@@ -2,17 +2,41 @@
 
 <h3>◍ Explicación</h3>
 <p class="mainText">
-    Los miembros del grupo de “Operadores de servidor” pueden administrar controladores de dominio, pudiendo realizar las siguientes acciones: 
+    Los miembros del grupo de <b>Operadores de servidor</b> pueden administrar controladores de dominio, pudiendo realizar las siguientes acciones: 
     iniciar sesión en un servidor de forma interactiva, crear y eliminar recursos compartidos de red, iniciar y detener servicios, realizar 
-    copias de seguridad y restaurar archivos, dar formato a la unidad de disco duro del equipo y apagarlo.
+    copias de seguridad y restaurar archivos, dar formato a la unidad de disco duro del equipo y apagarlo. 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/understand-security-groups#server-operators">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
 </p>
 
 <h3>◍ Ataque</h3>
 <p class="mainText">
-    Existen varias posibilidades para la escalada de privilegios con este grupo, por ejemplo tienen los permisos peligrosos de 
+    Inicialmente deberíamos comprobar si tenemos algunos privilegios por defecto como <b>SeBackupPrivilege</b> y <b>SeRestorePrivilege</b>, como se 
+    indica en la fase de <b><span href="#users/privileges" class="internal_link text-success">enumeración de privilegios</span></b>. 
+    En el caso de que no aparezcan dichos privilegios, se necesita pasar a un nivel alto de integridad, para ello hay que realizar alguna de las técnicas 
+    sugeridas en la sección de <b><span href="#info/UAC" class="internal_link text-success">Técnicas de bypass del UAC</span></b>.
+</p>
+<div class="list-group">
+    <a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
+</div>
+<br>
+<p class="mainText">
+    Una vez que tenemos los privilegios, existen varias posibilidades para la escalada con este grupo, por ejemplo tienen los permisos peligrosos de 
     <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> 
-    y <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b> explicados en el punto anterior. 
+    y <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b>. 
     Pero la forma más eficiente de escalar privilegios es aprovechar que tiene permisos 
     de modificación de los servicios, de forma que solamente habría que sustituir el binario al que apunta binPath en un servicio que se ejecute 
-    como SYSTEM hacia un código malicioso y elevar así los privilegios en la máquina.
+    como SYSTEM hacia un código malicioso y elevar así los privilegios en la máquina, por ejemplo.
 </p>
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Creamos primero una dll maliciosa con msfvenom con el siguiente código:
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">sc config AppReadiness binPath= "C:\Users\user\rev.exe"
+sc start AppReadiness
+</code></pre>
+</div>
+<!-- Code-->

