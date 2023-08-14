@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "priescfont";
-  src:url("/fonts/priescfont.eot");
-  src:url("/fonts/priescfont.eot?#iefix") format("embedded-opentype"),
-    url("/fonts/priescfont.woff") format("woff"),
-    url("/fonts/priescfont.ttf") format("truetype"),
-    url("/fonts/priescfont.svg#priescfont") format("svg");
+  src:url("./fonts/priescfont.eot");
+  src:url("./fonts/priescfont.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/priescfont.woff") format("woff"),
+    url("./fonts/priescfont.ttf") format("truetype"),
+    url("./fonts/priescfont.svg#priescfont") format("svg");
   font-weight: normal;
   font-style: normal;
 

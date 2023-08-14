@@ -63,36 +63,36 @@ Finalmente podremos extraer los hashes en nuestra máquina local y reutilizarlos
     Iniciamos comprobando que efectivamente tenemos el privilegio de <b>SeBackupPrivilege</b>
 </p>
 
-<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seRestore_1.png" />
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seRestore_1.png" />
 
 <p>
     Como se puede pareciar en la figura anterior el permiso está deshabilitado, para realizar la habilitación 
     ejecutamos el script de powershell <b>EnableSeBackupPrivilege.ps1</b>
 </p>
 
-<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_1.png" />
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seBackup_1.png" />
 
 <p>
     Con el permiso habilitado, realizamos una copia del registro de SAM y SYSTEM a nuestra máquina atacante directamente
 </p>
 
-<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_2.png" />
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seBackup_2.png" />
 
 <p>
     En la máquina Kali realizamos la extracción de los hashes NTLM con el comando <b>samdump2</b>
 </p>
 
-<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_3.png" />
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seBackup_3.png" />
 
 <p>
     Estos hashes los almacenamos en un fichero <b>sam.txt</b> y podemos crackearlos con John The Ripper como en este ejemplo
 </p>
 
-<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_4.png" />
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seBackup_4.png" />
 
 <p>
     O se puede intentar conseguir realizar un ataque de Pass The Hash para conseguir acceder directamente a la máquina sin la necesidad de 
     conocer las credenciales.
 </p>
 
-<img class="img img-fluid imag_ejemplos mb-3" src="/media/imag/users/seBackup_5.png" />
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seBackup_5.png" />
