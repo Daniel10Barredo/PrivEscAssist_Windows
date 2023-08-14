@@ -25,3 +25,33 @@ o por ejemplo realizar una ejecución en un proceso de SYSTEM utilizando <b>psge
 </div>
 <!-- Code-->
 
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+
+<p>
+    Comprobamos que tenemos el permiso <b>seDebugPrivilege</b> disponible.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seDebug_1.png" />
+<p>
+    Con este permiso podemos utilizar de forma muy sencilla <b>mimikatz.exe</b> para extraer los hashes NTLM 
+    del sistema e incluso acceder a credenciales guardadas en la memoria en texto plano.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seDebug_2.png" />
+<p>
+    Con estos hashes podríamos hacer o bien un ataque de cracking con Hashcat por ejemplo para intentar 
+    recuperar las contraseñas. Para esto tenemos que colocar los hashes en un fichero con el formato siguiente.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seDebug_3.png" />
+<p>
+    Y ahora crackearlos con <b>Hashcat</b> y rockyou.txt.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seDebug_4.png" />
+<p>
+    O también podríamos intentar realizar un Pass The Hash para conseguir acceder al sistema sin conocer la clave.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seDebug_5.png" />

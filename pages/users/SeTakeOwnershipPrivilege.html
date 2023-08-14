@@ -17,7 +17,9 @@ malicioso que permita la elevación de privilegios a SYSTEM. Para tomar la propi
 </p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet"><code data-language="shell">takeown /f 'C:\Windows\System32\[binario]'</code></pre>
+<pre class="code_snipet"><code data-language="shell">takeown /f 'C:\Windows\System32\[binario]'
+icacls 'C:\Windows\System32\[binario]' /grant user:F
+</code></pre>
 </div>
 <!-- Code-->
 
