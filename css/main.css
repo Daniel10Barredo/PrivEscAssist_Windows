@@ -244,6 +244,19 @@
 #introTextMain{
     border-bottom: 1px solid #3c3737;
 }
+.h_ejemplo{
+    color: #198754 !important;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-bottom: 2px solid #198754 !important;
+    padding-bottom: 0.5em !important;
+    border-top: 2px solid #198754;
+    padding-top: 0.5em;
+    text-align: center;
+    margin-top: 4em !important;
+    margin-bottom: 1.5em !important;
+    font-style: italic;
+}
 .imag_ejemplos{
     border: 3px solid #131313;
     border-radius: 8px;

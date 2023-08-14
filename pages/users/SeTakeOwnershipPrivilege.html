@@ -21,3 +21,38 @@ malicioso que permita la elevación de privilegios a SYSTEM. Para tomar la propi
 </div>
 <!-- Code-->
 
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+
+<p>
+    Comprobamos que tenemos el permiso <b>seTakeOwnershipPrivilege</b> disponible.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seOwnership_1.png" />
+<p>
+    El objetivo de nuestro ataque será reemplazar el binario de uno de los servicios que se ejecute como SYSTEM y que se pueda inicializar manualmente 
+    en este caso utilizaremos el servicio de <b>Fax</b> de Windows.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seOwnership_2.png" />
+<p>
+    Como este se encuentra en <b>System32</b>, utilizaremos <b>takeown</b> para poner a nuestro usuario como propietario y luego nos otrorgaremos 
+    todos los permisos (<b>F</b>) sobre este directorio.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seOwnership_3.png" />
+<p>
+    Podemos comprobar que ahora tenemos permisos completos sobre el directorio con <b>cacls</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seOwnership_4.png" />
+<p>
+    Ya está todo listo para la suplantación del servicio. Movemos el original, ponemos una shell reversa en su lugar y finalmente iniciamos el servicio.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seOwnership_5.png" />
+<p>
+    A los pocos segundos obtenemos la shell reversa como <b>SYSTEM</b> y volvemos a reestablecer el binario del servicio a su sitio!.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/seOwnership_6.png" />
