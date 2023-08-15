@@ -32,3 +32,40 @@
 <div class="list-group">
 <a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
 </div>
+
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p class="mainText">
+    Primero comprobamos que pertenecemos al grupo <b>Administrators</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/Admin_1.png" />
+<p class="mainText">
+    Sin embargo al listar los privilegios sólamente tenemos los permisos básicos, por lo tanto el proceso en el que estamos tiene 
+    un nivel de integridad medio.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/Admin_2.png" />
+<p class="mainText">
+    Para conseguir subir a un nivel de integridad alto deberemos realizar un <b>bypass de UAC</b> y para saber que técnica podemos 
+    utilizar, comenzamos buscando el sistema operativo objetivo.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/Admin_3.png" />
+<p class="mainText">
+    En este caso se trata de un Windows 7 SP1, por lo que utilizaremos por ejemplo la técnica que involucra una vulnerabilidad de EventViwer 
+    y para su explotación utilizaremos el script <b>Invoke-EventVwrBypass.ps1</b> sugerido en el apartado <b><span href="#info/UAC" class="internal_link text-success">Bypass UAC</span></b> de la herramienta.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/Admin_4.png" />
+<p class="mainText">
+    Al ejecutarse la shell reversa, obtenemos otro proceso del mismo usuario pero esta vez con un nivel de integridad alto, donde tenemos todos 
+    los permios del grupo administradores y sus accesos.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/Admin_5.png" />
+<p class="mainText">
+    Finalmente si quisiéramos ejecutar como SYSTEM, podríamos hacer uso del script <b>Get-System.ps1</b> como se muestra a continuación.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/Admin_6.png" />

@@ -20,7 +20,7 @@
 </p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){if (-Not(Test-Path -Path $Path -ErrorAction SilentlyContinue)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction SilentlyContinue) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}}
+<pre class="code_snipet code_powershell"><code data-language="shell">function ModifiablePath {param ([Parameter(Mandatory = $true)][String[]]$Paths);$Sids = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object -ExpandProperty Value;$Sids += $UserIdentity.User.Value;ForEach($Path in $Paths){try{$Path=$Path.Replace('"', "");if (-Not(Test-Path -Path $Path -ErrorAction Stop)){$Path=Split-Path -Path $Path -Parent};if (Test-Path -Path $Path -ErrorAction Stop) {$FILE=Resolve-Path -Path $Path | Select-Object -ExpandProperty Path;Get-Acl -Path $Path | Select-Object -ExpandProperty Access | Where-Object {($_.AccessControlType -match 'Allow')} | ForEach-Object {if($_.FileSystemRights){$Rights = $_.FileSystemRights.value__}else{$Rights = $_.RegistryRights.value__};if(@([uint32]'0x40000000',[uint32]'0x10000000',[uint32]'0x02000000',[uint32]'0x00080000',[uint32]'0x00040000',[uint32]'0x00000004',[uint32]'0x00000002') | Where-Object { $Rights -band $_ }){if ($Sids -contains $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]) | Select-Object -ExcludeProperty Value) {$Path}}}}}catch{$false}}}
 </code></pre>
 </div>
 <!-- Code-->
@@ -58,3 +58,49 @@ icacls [service_path]
     Si se puede modificar alguno de estos directorios, solamente habría que colocar un ejecutable malicioso con el nombre de la palabra pordonde corta la ruta y terminado
     en .exe.
 </p>
+
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    <b>Inicialmente, copiamos y pegamos para cargar la función auxiliar</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/regPerm_1.png" />
+<p>
+    Ahora copiamos y pegamos el script sugerido que buscará por todos los servicios que no estén entrecomillados y revisará los permisos 
+    de los directorios que llevan hasta él, para buscar algún punto vulnerable.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/unquoted_1.png" />
+<p>
+    Como se puede apreciar, aparece un servicio llamado <b>unquotedsvc</b> que parece tener algún directorio con permisos débiles. Vamos a comprobar 
+    primero la información sobre el servicio y obtener la ruta del binario.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/unquoted_2.png" />
+<p>
+    Como se puede comprobar la ruta tiene varios espacios en blanco, así que vamos a ir comprobando con <b>cacls</b> los permisos de cada directorio 
+    y subdirectorio para encontrar el punto vulnerable.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/unquoted_3.png" />
+<p>
+    Tenemos entonces un subdirectorio vulnerable, ya que otorga todos los permisos a los usuarios del sistema sobre ese directorio. Atendiendo a la forma 
+    en la que Windows parsea las rutas con espacios, crearemos una shell reversa y la colocaremos en el directorio <b>C:\Program Files\Unquoted Path Service\</b> 
+    con el nombre de <b>Common.exe</b>. De esta forma ya no subirá más directorios, sino que ejecutará nuestra shell.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/unquoted_4.png" />
+<p>
+    Finalmente ejecutamos de forma manual el servicio con el comando siguiente.
+</p>
+<!-- Code snipet-->
+<pre class="code_snipet"><code data-language="shell">net start unquotedsvc
+</code></pre>
+</div>
+<!-- Code-->
+<p>
+    Y a los pocos segundos obtenemos una conexión con la shell reversa ejecutada como SYSTEM.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/services/unquoted_5.png" />
