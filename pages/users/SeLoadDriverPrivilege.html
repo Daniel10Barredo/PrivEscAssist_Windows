@@ -10,12 +10,37 @@ elevados. Generalmente los grupos de operadores de impresora tienen este privile
 </p>
 <h3>◍ Ataque</h3>
 <p class="mainText">
-Un atacante como está limitado a la firma de Windows, puede abusar de drivers vulnerables conocidos como capcom.sys <a class="linksref" target="_blank" href="https://github.com/FuzzySecurity/Capcom-Rootkit/blob/master/Driver/Capcom.sys">
+Un atacante como está limitado a la firma de Windows, puede abusar de drivers vulnerables conocidos como <b>Capcom.sys</b> <a class="linksref" target="_blank" href="https://github.com/FuzzySecurity/Capcom-Rootkit/blob/master/Driver/Capcom.sys">
     <i class="bi bi-box-arrow-up-right"></i>
-</a> que puede ser abusado 
-para ejecutar cualquier tipo de código y además está firmado por Windows. Una vez cargado solo habría que tirar el exploit correspondiente (para capcom 
+</a> que puede ser explotado para ejecutar cualquier tipo de código y además está firmado por Windows. Para cargarlo podríamos utiliar <b>EopLoadDriver</b> <a class="linksref" target="_blank" href="https://github.com/TarlogicSecurity/EoPLoadDriver">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a> y una vez cargado solo habría que tirar el exploit correspondiente (para capcom 
 <a class="linksref" target="_blank" href="https://github.com/tandasat/ExploitCapcom">
     <i class="bi bi-box-arrow-up-right"></i>
 </a>) y se conseguiría ejecución 
 como SYSTEM.
 </p>
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Comprobamos que efectivamente tenemos el permiso de <b>seLoadDriverPrivilege</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/loadDriver_1.png" />
+<p>
+    Comenzaremos copiando el driver vulnerable <b>Capcom.sys</b> en la máquina y ejecutaremos <b>EopLoadDriver.exe</b> para que cree los registros que 
+    va a necesitar en la ruta del primer parámetro del registro del usuario actual y que su imágen apunte al driver, con lo siguiente.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/loadDriver_2.png" />
+<p>
+    Ejecutamos el exploit <b>ExploitCapcom.exe</b> para que ejecute una shell reversa cuando se produzca la inyección.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/loadDriver_3.png" />
+<p>
+    A los pocos segundos se inicia la conexión reversa con una lina de comandos con permisos de SYSTEM
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/loadDriver_4.png" />
