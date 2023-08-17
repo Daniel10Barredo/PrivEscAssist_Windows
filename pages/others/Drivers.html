@@ -1,0 +1,40 @@
+<h1>Drivers vulnerables</h1>
+
+<p>
+    Otro aspecto a considerar son los drivers instalados en el sistema, ya que en algunas ocasiones 
+    pueden contener vulnerabilidades que nos permitan realizar una escalada de privilegios en el sistema. 
+    Dado que los drivers funcionan con privilegios altos, un aacante que logre explotar una de estas vulnerabilidades 
+    puede llegar a tomar el control sobre el sistema.
+</p>
+
+
+<h3>◍ Comprobación</h3>
+<p>
+    Para la comprobación propongo la utilización de uno de mis scripts <b>CheckWindDrivers</b> <a class="linksref" target="_blank" href="https://github.com/Daniel10Barredo/checkWinDrivers">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>, en el que primero hay que realizar los hashes 
+    de todos los driver y luego en local se comprueban con la base de datos <b>LOLDrivers.io</b> 
+    <a class="linksref" target="_blank" href="https://www.loldrivers.io/">
+        <i class="bi bi-box-arrow-up-right"></i>
+    </a>.
+</p>
+
+<p class="mainComment">
+    Comenzamos listando todos los drivers y haciendo los hashes MD5 a cada uno con el siguiente comando.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object 'Path' | ForEach-Object {$out=$_.Path+";";$out+=$(certUtil -hashFile $_.Path MD5)[1] -replace " ","";$out} 
+</code></pre>
+</div>
+<!-- Code-->
+
+<p class="mainComment">
+    Finalmente, copiamos y pegamos la salida anterior a un fichero y lo introducimos como parámetro al script.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">python3 checkWinDrivers.py drivers.log 
+</code></pre>
+</div>
+<!-- Code-->

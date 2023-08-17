@@ -96,6 +96,7 @@ function goToPage() {
                 $("#hntext").html("/"+hash.replace("/"," /"));
                 $(this).find(".internal_link").on( "click",linkInternoHook);
                 SetCurrentPageInMenu();
+                document.title = "PrivEscAssist: "+hash.replace("/"," - ");
               })
         });
     }

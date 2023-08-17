@@ -58,6 +58,11 @@
     border: 1px solid #09090b;
     margin-bottom: 0.5em;
 }
+.bug_custom{
+    rotate: 30deg;
+    display: inline-block;
+    color: #198754;
+}
 #logo {
     padding: 0.4em 0.4em 0.4em 0.4em;
     text-align: center;
@@ -72,6 +77,12 @@
 #logo:hover{
     -webkit-animation: glitch 4s 0.1s infinite;
             animation: glitch 4s 0.1s infinite;
+    border-bottom: 1px solid rgb(143, 27, 27);
+}
+#logo:hover > a > div{
+    transform: rotate(-45deg);
+    transition: all 0.3s ease;
+    color: rgb(143, 27, 27);
 }
 #mainImag:hover{
     -webkit-animation: glitch 4s 0.1s infinite;
