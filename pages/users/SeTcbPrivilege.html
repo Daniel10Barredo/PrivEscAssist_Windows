@@ -12,5 +12,38 @@ adicionales arbitrarios al token de acceso actual.
 <h3>◍ Ataque</h3>
 <p class="mainText">
 Un atacante podría usar <b>KERB_S4U_LOGON</b> para conseguir un token impersonado para un usuario sin saber las credenciales, añadirse a si mismo al grupo administradores, 
-cambiar el nivel de integridad del token, etc. resultando en una forma rápida para la escalada de privilegios.
+cambiar el nivel de integridad del token, etc. resultando en una forma rápida para la escalada de privilegios. Un ejemplo muy útil es el propuesto por el proyecto 
+<b>TcbElevation.exe</b>. <a class="linksref" target="_blank" href="https://gist.github.com/antonioCoco/19563adef860614b56d010d92e67d178">
+    <i class="bi bi-box-arrow-up-right"></i>
+</a>
 </p>
+
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Comprobamos que efectivamente tenemos el permiso de <b>SeTcbPrivilege</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/tcbPriv_1.png" />
+<p>
+    A continuación, creamos la shell reversa con msfvenom y vamos a utilizar el proyecto <b>TcbElevation</b> para explotar esta vulnerabilidad, antes que nada 
+    hay que realizar la compilación con el siguiente comando.
+</p>
+<!-- Code snipet-->
+<pre class="code_snipet"><code data-language="shell">g++ -static TcbElevation.cpp -o TcbElevation.exe -municode -lsecur32
+</code></pre>
+</div>
+<!-- Code-->
+<p>
+    Y ya tenemos todo listo, nos pide como primer parámetro el nombre del servicio y de segundo el comando a ejecutar que será la shell reversa que hemos creado.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/tcbPriv_2.png" />
+<p>
+    En unos pocos segundos obtenemos la shell reversa ejecutada como SYSTEM.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/tcbPriv_3.png" />

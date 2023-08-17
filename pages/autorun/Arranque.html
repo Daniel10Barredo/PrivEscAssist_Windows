@@ -36,9 +36,9 @@
 </p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">Get-CimInstance Win32_StartupCommand | ForEach-Object { if(ModifiablePath $_.Command){ $_ } }
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-WmiObject Win32_StartupCommand | Where-Object {$_ -and $_.Command} | ForEach-Object { if(ModifiablePath $_.Command){ $_ } }
 #Sólo para listar las tareas
-Get-CimInstance Win32_StartupCommand | select Name, command, Location, User | fl
+Get-WmiObject Win32_StartupCommand | select Name, command, Location, User | fl
 </code></pre>
 </div>
 <!-- Code-->
@@ -79,6 +79,14 @@ dir /b "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
     Son numerosos los registros que pueden contener aplicaciones para la ejecución al inicio de sesión o al iniciar el sistema y estos serían los 
     siguientes.
 </p>
+
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">@("HKLM:\Software\Microsoft\Windows\CurrentVersion\Run","HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce","HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run","HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnce","HKCU:\Software\Microsoft\Windows\CurrentVersion\Run","HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce","HKCU:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run","HKCU:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnce","HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Run","HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunOnce","HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunE","HKLM:\Software\Microsoft\Windows\RunOnceEx","HKLM:\Software\Wow6432Node\Microsoft\Windows\RunOnceEx","HKCU:\Software\Microsoft\Windows\RunOnceEx","HKCU:\Software\Wow6432Node\Microsoft\Windows\RunOnceEx","HKLM:\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce","HKCU:\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce","HKLM:\Software\Microsoft\Windows\CurrentVersion\RunServices","HKCU:\Software\Microsoft\Windows\CurrentVersion\RunServices","HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunServicesOnce","HKCU:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunServicesOnce","HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\RunServices","HKCU:\Software\Wow5432Node\Microsoft\Windows\CurrentVersion\RunServices","HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon") | ForEach-Object {if(Test-Path $_){echo "";echo $_;echo "";Get-ItemProperty $_}}
+</code></pre>
+</div>
+<!-- Code-->
+
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
 <pre class="code_snipet"><code data-language="shell">#Lista de directorios Startup
@@ -113,3 +121,32 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell
 </code></pre>
 </div>
 <!-- Code-->
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Inicialmente <b>cargamos la función auxiliar</b> y ejecutamos el script sugerido que pasará por todas las 
+    tareas programadas y comprobará si se puede manipular el binario que se ejecuta.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/autorun/autorun_1.png" />
+<p>
+    Parece que hay un programa que se inicia al iniciar sesión llamado <b>My Program</b>, vamos a obtener más datos sobre esta tarea programada.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/autorun/autorun_2.png" />
+<p>
+    Comprobamos entonces que esta vulnerabilidad que existe con <b>icacls</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/autorun/autorun_3.png" />
+<p>
+    Como se puede ver todo el mundo tiene todos los permisos sobre este binario. Para realizar el ataque creamos una shell reversa y la intercambiamos por el binario.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/autorun/autorun_4.png" />
+<p>
+    Y ahora solamente tendríamos que esperar a que algún usuario con permisos privilegiados inicie sesión para obtener sus privilegios.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/autorun/autorun_5.png" />

