@@ -11,6 +11,16 @@
 </p>
 
 <h3>◍ Ataque</h3>
+
+<p class="mainText">
+    Inicialmente deberíamos comprobar si estamos en un proceso ejecutado como administrador, porque se necesita pasar a un nivel alto 
+    de integridad para poder utilizar los permosos. En caso de no estar como administrador seguir las técnicas  
+    sugeridas en la sección de <b><span href="#info/UAC" class="internal_link text-success">Técnicas de bypass del UAC</span></b>.
+</p>
+<div class="list-group">
+    <a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
+</div>
+<br>
 <p class="mainText">
     Aunque no se puede agregar a un usuario como administrador, existen varias alternativas para la escalada de privilegios, como por ejemplo 
     agregar a un usuario al grupo <b><span href="#groups/DNSAdmins" class="internal_link text-success">DNSAdmins</span></b> o ponerlo como 
@@ -23,13 +33,13 @@
     Una sugerencia sería añadir al grupo DNSAdmins el usuario actual:
 </p>
 <div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">Add-ADGroupMember -Identity "DNSAdmins" -Members AO
+<pre class="code_snipet"><code data-language="shell">net localgroup "DnsAdmins" [user] /add
 </code></pre>
 </div>
 <!-- Code-->
 
 <p class="mainText">
-    Y continuar con la explotación del grupo <b>DNSAdmins</b>
+    Y continuar con la explotación del grupo <b>DNSAdmins</b> (es posible que tengas que cerrar sesión y abrirla de nuevo para ver los cambios)
 </p>
 <div class="list-group">
     <a role="button" href="#groups/DNSAdmins" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; DNSAdmins</a>

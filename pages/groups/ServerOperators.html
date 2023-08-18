@@ -22,21 +22,12 @@
 </div>
 <br>
 <p class="mainText">
-    Una vez que tenemos los privilegios, existen varias posibilidades para la escalada con este grupo, por ejemplo tienen los permisos peligrosos de 
+    Una vez que tenemos los privilegios (habilitados o no), existen varias posibilidades para la escalada con este grupo, por ejemplo tienen los permisos peligrosos de 
     <b><span href="#users/SeBackupPrivilege" class="internal_link text-success">SeBackupPrivilege</span></b> 
-    y <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b>. 
-    Pero la forma más eficiente de escalar privilegios es aprovechar que tiene permisos 
-    de modificación de los servicios, de forma que solamente habría que sustituir el binario al que apunta binPath en un servicio que se ejecute 
-    como SYSTEM hacia un código malicioso y elevar así los privilegios en la máquina, por ejemplo.
+    y <b><span href="#users/SeRestorePrivilege" class="internal_link text-success">SeRestorePrivilege</span></b>.
 </p>
 
-<!-- Code snipet-->
-<p class="mainComment">
-    Creamos primero una dll maliciosa con msfvenom con el siguiente código:
-</p>
-<div class="snipet_custom position-relative">
-<pre class="code_snipet"><code data-language="shell">sc config AppReadiness binPath= "C:\Users\user\rev.exe"
-sc start AppReadiness
-</code></pre>
+<div class="list-group">
+    <a role="button" href="#users/SeBackupPrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; SeBackupPrivilege</a>
+    <a role="button" href="#users/SeRestorePrivilege" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; SeRestorePrivilege</a>
 </div>
-<!-- Code-->

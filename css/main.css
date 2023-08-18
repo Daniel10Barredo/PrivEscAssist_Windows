@@ -202,6 +202,10 @@
 .internal_link{
     cursor: pointer;
 }
+.internal_link:hover{
+    color: #016c16!important;
+    transition: all 0.3s ease;
+}
 .nav-numero{
     margin-right: 0.6em;
     padding: 1px 5px;
@@ -248,7 +252,8 @@
 }
 #mainContent > h1 {
     font-size: 2.0rem;
-    margin-bottom: 0.8em;
+    margin-bottom: 1.5em;
+    margin-top: 0.5em;
     /*border-bottom: 1px solid #262626;*/
     font-size: 2.5rem;
     font-weight: bold;
@@ -282,12 +287,20 @@
 }
 .linksref{
     text-decoration: none;
-    color: #00a621;
+    color: #005010;
+}
+.linksref:hover{
+    color: #016c16!important;
+    transition: all 0.5s ease;
 }
 .linktool{
     display: block;
     margin-left: 2em;
     color: #8f8f8f;
+}
+.linktool:hover{
+    color: #016c16!important;
+    transition: all 0.5s ease;
 }
 .recordatorio{
     font-size: 0.9em;
@@ -359,7 +372,7 @@
     color: #87f940;
 }
 .code_powershell {
-    background-color: #110d37!important;
+    background-color: #040313!important;
 }
 
 
