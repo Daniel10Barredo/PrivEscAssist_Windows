@@ -99,6 +99,12 @@
     border: 1px solid #bd1c1c9e!important;
     text-shadow: 4px 2px 1px rgb(143, 27, 27);
 }
+.glitch_main{
+    -webkit-animation: glitch 6s 0s;
+            animation: glitch 6s 0s;
+    text-shadow: 4px 2px 1px rgb(143, 27, 27);
+    border-left: 7px solid rgb(143, 27, 27)!important;
+}
 .warning_auxfunc{
     background-color: #1987540a;
     padding: 8px 8px;
