@@ -93,6 +93,11 @@
             animation: glitch 4s 0.1s infinite;
     cursor: pointer;
 }
+.glitch_nav{
+    -webkit-animation: glitch 6s 0s;
+            animation: glitch 6s 0s;
+    border: 1px solid #bd1c1c9e!important;
+}
 /*Colapsar en pantalla pequeña*/
 @media (min-width: 768px) {
     .collapse.dont-collapse-sm {
@@ -286,6 +291,9 @@
     box-shadow: 7px 6px 5px 0px rgba(0,0,0,0.75);
     margin-left: auto;
     margin-right: auto;
+}
+.table_custom > thead > tr > th, .table_custom > tbody > tr > th, .table_custom > tbody > tr > td{
+    padding-left: 1.5em;
 }
 
 /*CSS para boton de copy en códigos*/

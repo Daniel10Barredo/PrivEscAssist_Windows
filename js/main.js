@@ -93,7 +93,11 @@ function goToPage() {
             //Se sobreescribe la información
             $("#mainContent").slideUp(300,function() {
                 $(this).html(data).slideDown(300,function(){Rainbow.color();addCopyButtons();});
-                $("#hntext").html("/"+hash.replace("/"," /"));
+                $("#hntext").html(hash.replace("/"," > "));
+                $("#homeNav").toggleClass("glitch_nav");
+                setTimeout(function() {
+                    $("#homeNav").toggleClass("glitch_nav");
+                }, 500);
                 $(this).find(".internal_link").on( "click",linkInternoHook);
                 SetCurrentPageInMenu();
                 document.title = "PrivEscAssist: "+hash.replace("/"," - ");
