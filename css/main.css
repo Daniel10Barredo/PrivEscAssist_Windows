@@ -84,6 +84,10 @@
     transition: all 0.3s ease;
     color: rgb(143, 27, 27);
 }
+#logo:hover > a {
+    text-shadow: 6px 2px 1px rgb(143, 27, 27);
+    transition: all 0.3s ease;
+}
 #mainImag:hover{
     -webkit-animation: glitch 4s 0.1s infinite;
             animation: glitch 4s 0.1s infinite;
@@ -243,6 +247,11 @@
 .linksref{
     text-decoration: none;
     color: #00a621;
+}
+.linktool{
+    display: block;
+    margin-left: 2em;
+    color: #8f8f8f;
 }
 .recordatorio{
     font-size: 0.9em;
