@@ -97,6 +97,7 @@
     -webkit-animation: glitch 6s 0s;
             animation: glitch 6s 0s;
     border: 1px solid #bd1c1c9e!important;
+    text-shadow: 4px 2px 1px rgb(143, 27, 27);
 }
 /*Colapsar en pantalla pequeña*/
 @media (min-width: 768px) {
