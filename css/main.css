@@ -105,6 +105,20 @@
     text-shadow: 4px 2px 1px rgb(143, 27, 27);
     border-left: 7px solid rgb(143, 27, 27)!important;
 }
+.glitch_logo{
+    -webkit-animation: glitch 4s 0.1s infinite;
+            animation: glitch 4s 0.1s infinite;
+    border-bottom: 1px solid rgb(143, 27, 27);
+}
+.glitch_logo > a {
+    text-shadow: 6px 2px 1px rgb(143, 27, 27);
+    transition: all 0.3s ease;
+}
+.glitch_logo > a > div{
+    transform: rotate(-45deg);
+    transition: all 0.3s ease;
+    color: rgb(143, 27, 27);
+}
 .warning_auxfunc{
     background-color: #1987540a;
     padding: 8px 8px;

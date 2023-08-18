@@ -102,6 +102,10 @@ function goToPage() {
                 setTimeout(function() {
                     $("#mainContent").toggleClass("glitch_main");
                 }, 500);
+                $("#logo").toggleClass("glitch_logo");
+                setTimeout(function() {
+                    $("#logo").toggleClass("glitch_logo");
+                }, 500);
                 $(this).find(".internal_link").on( "click",linkInternoHook);
                 SetCurrentPageInMenu();
                 document.title = "PrivEscAssist: "+hash.replace("/"," - ");
