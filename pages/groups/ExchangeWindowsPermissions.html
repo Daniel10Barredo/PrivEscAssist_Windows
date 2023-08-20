@@ -11,7 +11,56 @@
     Un atacante podría abusar de esto y modificar la ACL para obtener privilegios de nivel de replicación DSync y poder así realizar una 
     sincronización que permita obtener todos los hashes del directorio activo, para finalmente llevar a cabo una escalada de privilegios en 
     todo el dominio.
-    <a class="linksref" target="_blank" href="https://pentestlab.blog/2019/09/12/microsoft-exchange-acl/">
-        <i class="bi bi-box-arrow-up-right"></i>
-    </a>
 </p>
+
+
+
+<h3>◍ Herramientas</h3>
+<p>
+    <a class="linksref linktool" target="_blank" href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1"> <i class="bi bi-gear me-1"></i> PowerView.ps1</a>
+</p>
+
+
+
+
+<!-- 
+    ---------------------------- EJEMPLO ------------------------------------------------
+-->
+
+<h2 class="h_ejemplo"><i class="bi bi-bug-fill me-2"></i></i>EJEMPLO</h2>
+<p>
+    Comprobamos que efectivamente pertenecemos al grupo <b>Exchange Windows Permissions</b>.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/exchangeWin_1.png" />
+<p>
+    Para poder modificar la ACL vamos a utilizar la herramienta <b>PowerView.ps1</b> y su función <b>Add-DomainObjectACL</b> como se muestra a continuación.
+</p>
+<!-- Code snipet-->
+<pre class="code_snipet code_powershell"><code data-language="shell">Import-Module .\PowerView.ps1
+Add-DomainObjectACL -TargetIdentity 'DC=htb,DC=local' -PrincipalIdentity [user] -Rights DCSync
+</code></pre>
+</div>
+<!-- Code-->
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/exchangeWin_2.png" />
+<p>
+    Con DCSync habilitado, podemos recoger todos los hashes de todos los usuarios con <b>mimikatz</b> o por ejemplo con la herramienta <b>secretsdump.py</b> 
+    de Impacket como se muestra a continuación.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/exchangeWin_3.png" />
+<p>
+    A partir de aquí se podrían hacer un ataque de cracking de los hashes capturados o bien directamente "Pass The Hash" para conseguir ejecución con un usuario 
+    privilegiado directamente.
+</p>
+<img class="img img-fluid imag_ejemplos mb-3" src="./media/imag/groups/exchangeWin_4.png" />
+<p>
+    Como opciones para realizar el cracking de los hashes NTLM se puede utilizar <b>john</b> o <b>hashcat</b> por ejemplo, como se muestra a continuación:
+</p>
+<!-- Code snipet-->
+<pre class="code_snipet"><code data-language="shell">john --format=NT --wordlist=rockyou.txt hashes.txt
+hashcat -m 1000 -a 0 --username hashes.txt ~/wordlists=rockyou.txt
+</code></pre>
+</div>
+<!-- Code-->
+
+
+

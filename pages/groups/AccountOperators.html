@@ -29,18 +29,21 @@
 </p>
 
 <!-- Code snipet-->
-<p class="mainComment">
-    Una sugerencia sería añadir al grupo DNSAdmins el usuario actual:
-</p>
 <div class="snipet_custom position-relative">
-<pre class="code_snipet"><code data-language="shell">net localgroup "DnsAdmins" [user] /add
+<pre class="code_snipet"><code data-language="shell">#Se puede crear un nuevo usuario
+net user [user] [password] /add
+#Añadirlo a Dns Admins
+net localgroup "DnsAdmins" [user] /add
+#O añadirlo a Exchange Windos Permissions
+net group "Exchange Windows Permissions" [user] /add
 </code></pre>
 </div>
 <!-- Code-->
 
 <p class="mainText">
-    Y continuar con la explotación del grupo <b>DNSAdmins</b> (es posible que tengas que cerrar sesión y abrirla de nuevo para ver los cambios)
+    Y continuar con la explotación del grupo <b>DNSAdmins</b> o <b>ExchangeWindowsPermissions</b> (es posible que tengas que cerrar sesión y abrirla de nuevo para ver los cambios)
 </p>
 <div class="list-group">
     <a role="button" href="#groups/DNSAdmins" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; DNSAdmins</a>
+    <a role="button" href="#groups/ExchangeWindowsPermissions" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Exchange Windows Permissions</a>
 </div>
