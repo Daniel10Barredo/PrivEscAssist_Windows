@@ -1,3 +1,4 @@
+
 //Al cargar
 window.onload = function() {
     //Preloader
@@ -11,6 +12,10 @@ window.onload = function() {
     $(".internal_link").on( "click",linkInternoHook);
     //Imag hacker
     hackerTransition();
+    //Al cambiar url
+    $(window).bind('popstate', function() {
+        goToPage();
+    });
 };
 
 //Comportamiento menu medium
@@ -118,7 +123,6 @@ function goToPage() {
 function linkInternoHook() {
     hash=this.getAttribute('href');
     window.location=window.location.pathname+hash;
-    goToPage();
 }
 
 /*Cambiar estilo del link donde se encuentra*/
