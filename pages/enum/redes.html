@@ -22,6 +22,13 @@
 <pre class="code_snipet"><code data-language="shell">netstat -ano</code></pre>
 </div>
 <!-- Code-->
+<p class="mainComment">Script para escanear puertos en la red interna.</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet code_powershell"><code data-language="shell">1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("10.10.10.1", $_)) "TCP port $_ is open"} 2>$null</code></pre>
+</div>
+<!-- Code-->
+
 
 <h2><i class="bi bi-check-circle me-2"></i></i>Enrutamiento</h2>
 <p class="mainComment">Listado de la tabla de enrutamiento.</p>

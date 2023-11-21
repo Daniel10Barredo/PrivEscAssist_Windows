@@ -12,6 +12,8 @@ reg query HKEY_LOCAL_MACHINE\SOFTWARE</code></pre>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
 <pre class="code_snipet code_powershell"><code data-language="shell">Get-ChildItem 'C:\Program Files', 'C:\Program Files (x86)' | ft Parent,Name,LastWriteTime
+Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
 Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
 Get-CimInstance -class win32_Product | Select-Object Name, Version
 </code></pre>

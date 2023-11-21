@@ -37,9 +37,9 @@
 </div>
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
-<pre class="code_snipet code_powershell"><code data-language="shell">Get-ScheduledTask -ErrorAction Ignore | where {$_.principal.RunLevel -eq "Highest"} | ForEach-Object { if(ModifiablePath $_.Actions.Execute){ $_ } }
+<pre class="code_snipet code_powershell"><code data-language="shell">Get-ScheduledTask -ErrorAction Ignore | where {$_.principal.RunLevel -eq "Highest"} | Where-Object {$Null -ne $_.Actions.Execute} | ForEach-Object { if(ModifiablePath $_.Actions.Execute){ $_ } }
 #Para listar los que se ejecutan con altos privilegios
-Get-ScheduledTask | where {$_.principal.RunLevel -eq "Highest"} | ft TaskName,TaskPath,State
+Get-ScheduledTask | where {$_.principal.RunLevel -eq "Highest"} | Where-Object {$Null -ne $_.Actions.Execute} | ft TaskName,TaskPath,State
 </code></pre>
 </div>
 <!-- Code-->
@@ -50,7 +50,7 @@ Get-ScheduledTask | where {$_.principal.RunLevel -eq "Highest"} | ft TaskName,Ta
 <!-- Code snipet-->
 <div class="snipet_custom position-relative">
 <pre class="code_snipet"><code data-language="shell">#Lista las tareas programadas
-schtasks /query /fo LIST /v
+schtasks /query /fo LIST /v | findstr "Task\ To\ Run:" | findstr ".exe"
 #Comprobación de cada 
 icacls "C:\path to command"
 </code></pre>
