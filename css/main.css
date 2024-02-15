@@ -88,6 +88,12 @@
     text-shadow: 6px 2px 1px rgb(143, 27, 27);
     transition: all 0.3s ease;
 }
+.os-logo{
+    color: #1987549e;
+    position: absolute;
+    top: 0.2em;
+    right: 0.8em;
+}
 #mainImag:hover{
     -webkit-animation: glitch 4s 0.1s infinite;
             animation: glitch 4s 0.1s infinite;
@@ -228,7 +234,7 @@
 /*Main*/
 #main {
     padding: 1.5rem 1rem 1rem 1rem;
-    min-height: 95vh;
+    min-height: 97vh;
     box-shadow: 0 4px 2px -2px #404040;
     background-color: #111730;
     /*background-image: radial-gradient( ellipse farthest-corner at 10px 10px , #273368, #101035 50%, #09091a 50%);*/
@@ -378,10 +384,25 @@
 
 /*Footer*/
 .footer{
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    height: 3vh;
     background-color: rgb(4 4 4);
     color: #a0a0a0;
     font-size: 0.7em;
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.footer > a{
+    color: #177e4e;
+    text-decoration: none;
+}
+.footer > a:hover{
+    font-weight: bold;
+    transition: linear;
+    transition-duration: 0.1s;
+}
+.green-link{
+    color: #177e4e;
+    text-decoration: none;
 }

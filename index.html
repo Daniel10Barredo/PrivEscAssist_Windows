@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/PrivEscAssist_Windows/favicon.ico">
     <title>Asistente para escalada de privilegios en Windows</title>
-    <meta description="Herramienta de asistencia a la escalada de privilegios manual en sistemas Windows, que ofrece una guía metodológica basada en checklist y con explicaciones detalladas de cada paso a seguir.">
+    <meta description="Guía de asistencia a la escalada de privilegios en sistemas Windows orientada a la metodología OSCP. Ofrece una guía basada en checklist con explicaciones detalladas de cada paso a seguir.">
     <meta keywords="Escalada de privilegios, windows">
     <!-- Scripts -->
     <script src="js/jquery-3.7.0.min.js"></script>
@@ -38,10 +38,15 @@
     
         <!-- Secc izquierda -->
         <nav class="navbar navbar-dark col-12 col-md-3 h-100" id="navIzquierda">
+            <span class="os-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-windows" viewBox="0 0 16 16">
+                    <path d="M6.555 1.375 0 2.237v5.45h6.555zM0 13.795l6.555.933V8.313H0zm7.278-5.4.026 6.378L16 16V8.395zM16 0 7.33 1.244v6.414H16z"/>
+                </svg>
+            </span>
             <!-- Logo -->
             <div class="col-md-12 col-9" id="logo">
                 <a href="/PrivEscAssist_Windows/">
-                    <div id="logo_icon" class="bi bi-bug me-2 bug_custom"></div> PrivEscAssist 
+                    <div id="logo_icon" class="bi bi-bug me-2 bug_custom"></div> PrivEscAssist
                 </a>
             </div>
             <!-- Secciones y subsecciones -->
@@ -88,12 +93,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">3</span><span class="sub-tog sub-tog-down">Sistema Operativo </span><div class='fa fa-caret-down right'></div></div>
-                        <ul>
-                            <li><div href="#os/KernelExploits" class="internal_link nav-subitem"><input type="checkbox"/> Exploits de kernel</div></li>
-                        </ul>
-                    </li>
-                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">4</span><span class="sub-tog sub-tog-down">Servicios </span><div class='fa fa-caret-down right'></div></div>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">3</span><span class="sub-tog sub-tog-down">Servicios </span><div class='fa fa-caret-down right'></div></div>
                         <ul>
                             <li><div href="#services/PermisosDirectorio" class="internal_link nav-subitem"><input type="checkbox"/> Permisos directorio</div></li>
                             <li><div href="#services/PermisosRegistro" class="internal_link nav-subitem"><input type="checkbox"/></i> Permisos registro</div></li>
@@ -101,7 +101,7 @@
                             <li><div href="#services/DLLHijacking" class="internal_link nav-subitem"><input type="checkbox"/></i> DLL Hijacking</div></li>
                         </ul>
                     </li>
-                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">5</span><span class="sub-tog sub-tog-down">Credenciales </span><div class='fa fa-caret-down right'></div></div>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">4</span><span class="sub-tog sub-tog-down">Credenciales </span><div class='fa fa-caret-down right'></div></div>
                         <ul>
                             <li><div href="#credentials/CredManager" class="internal_link nav-subitem"><input type="checkbox"/> Cred Manager</div></li>
                             <li><div href="#credentials/Autologon" class="internal_link nav-subitem"><input type="checkbox"/></i> Autologon</div></li>
@@ -114,10 +114,15 @@
                             <li><div href="#credentials/Historiales" class="internal_link nav-subitem"><input type="checkbox"/></i> Historiales</div></li>
                         </ul>
                     </li>
-                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">6</span><span class="sub-tog sub-tog-down">Autorun </span><div class='fa fa-caret-down right'></div></div>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">5</span><span class="sub-tog sub-tog-down">Autorun </span><div class='fa fa-caret-down right'></div></div>
                         <ul>
                             <li><div href="#autorun/Arranque" class="internal_link nav-subitem"><input type="checkbox"/> Arranque</div></li>
                             <li><div href="#autorun/TareasProgramadas" class="internal_link nav-subitem"><input type="checkbox"/></i> Tareas Programadas</div></li>
+                        </ul>
+                    </li>
+                    <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">6</span><span class="sub-tog sub-tog-down">Sistema Operativo </span><div class='fa fa-caret-down right'></div></div>
+                        <ul>
+                            <li><div href="#os/KernelExploits" class="internal_link nav-subitem"><input type="checkbox"/> Exploits de kernel</div></li>
                         </ul>
                     </li>
                     <li class='nav-item sub-menu'><div class="submenu-custom"><span class="nav-numero">7</span><span class="sub-tog sub-tog-down">Otros </span><div class='fa fa-caret-down right'></div></div>
@@ -141,9 +146,10 @@
             <div id="mainContent">
                 
                 <h1 id="introTextMain" class="text-center">Escalada de Privilegios En Windows</h1>
-                <p class="text-center"><b>
-                    Herramienta de asistencia a la escalada de privilegios manual en sistemas Windows, que ofrece una guía metodológica basada en checklist y
-                    con explicaciones detalladas de cada paso a seguir.
+                <p class="text-center">
+                    <b>
+                    Guía de escalada de privilegios en Windows basada en la metodología OSCP. <br>
+                    Ofrece una guía basada en checklist con explicaciones detalladas de cada paso a seguir.
                     </b>
                 </p>
                 <div class="text-center">
@@ -151,7 +157,10 @@
                 </div>
                 <br>
                 <p class="text-center">
-                    <b>Sigue paso a paso cada uno de los puntos del menú de la izquierda.</b>
+                    Además he desarrollado un pequeño script en powershell implementando todos los pasos de esta metodología que ha sido de gran ayuda para el OSCP <br>
+                    <b>
+                        <a href="https://github.com/Daniel10Barredo/OSCP_AuxReconTools" target="_blank" class="green-link fs-5"><i class="bi bi-github"></i> AuxReconToolsOSCP</a>
+                    </b>
                 </p>
 
             </div>
@@ -178,7 +187,7 @@
     
 
     <footer class="footer text-center text-md-end pe-0 pe-md-5">
-        Daniel Diez Barredo | © 2023
+        <a href="https://www.linkedin.com/in/daniel-diez-barredo-973279292/" target="_blank">Daniel Diez Barredo</a> | © 2024
     </footer>
     
     <script src="js/main.js"></script>
