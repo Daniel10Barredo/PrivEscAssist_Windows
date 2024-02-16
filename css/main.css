@@ -402,7 +402,17 @@
     transition: linear;
     transition-duration: 0.1s;
 }
-.green-link{
+.green-link-github{
     color: #177e4e;
     text-decoration: none;
+    border: 1px solid #177e4e;
+    border-radius: 5px;
+    padding: 0.3em 0.3em;
+}
+.green-link-github:hover{
+    color: rgb(19, 175, 102);
+    text-decoration: none;
+    border: 2px solid #177e4e;
+    transition: linear;
+    transition-duration: 0.1s;
 }
